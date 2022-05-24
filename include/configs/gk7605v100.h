@@ -230,5 +230,5 @@
 #define CONFIG_CMD_UGZIP
 
 /* base on needs #define CONFIG_AUDIO_ENABLE */
-
+#include <configs/gk-common.h>
 #endif /* __GK7605V100_H */

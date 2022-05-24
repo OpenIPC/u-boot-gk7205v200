@@ -233,5 +233,5 @@
 
 /* base on needs #define CONFIG_AUDIO_ENABLE */
 #define CONFIG_AUDIO_ENABLE
-
+#include <configs/gk-common.h>
 #endif /* __GK7205V300_H */
