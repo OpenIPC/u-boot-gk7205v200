@@ -1645,15 +1645,15 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		"XT25F128BSSI/HGU", {0x0B, 0x40, 0x18}, 3, _16M,  _64K, 3,
 		{
 			&read_std(0, INFINITE, 80), /* 80MHz */
-			&read_dual(1, INFINITE, 108), /* 108MHz */
-			&read_dual_addr(1, INFINITE, 108), /* 108MHz */
-			&read_quad(1, INFINITE, 108), /* 108MHz */
-			&read_quad_addr(3, INFINITE, 72),  /* 72MHz */
+//			&read_dual(1, INFINITE, 108), /* 108MHz */
+//			&read_dual_addr(1, INFINITE, 108), /* 108MHz */
+//			&read_quad(1, INFINITE, 108), /* 108MHz */
+//			&read_quad_addr(3, INFINITE, 72),  /* 72MHz */
 			0
 		},
 		{
-			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80),  /* 80MHz */
+			&write_std(0, 256, 104), /* 80MHz */
+//			&write_quad(0, 256, 80),  /* 80MHz */
 			0
 		},
 		{

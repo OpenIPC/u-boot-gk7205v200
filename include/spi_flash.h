@@ -59,6 +59,7 @@ void spi_flash_lock(unsigned char cmp, unsigned char level, unsigned char op);
 #define MID_MICRON      0x20    /* Micron Manufacture ID */
 #define MID_PARAGON     0xe0    /* Paragon Manufacture ID */
 #define MID_FM          0xa1    /* Fudan Manufacture ID */
+#define MID_XTX         0xb     /* XTX Manufacture ID */
 
 #ifndef CONFIG_SF_DEFAULT_SPEED
 # define CONFIG_SF_DEFAULT_SPEED	1000000
