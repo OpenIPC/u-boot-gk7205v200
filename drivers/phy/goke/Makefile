@@ -1,0 +1,4 @@
+obj-$(CONFIG_TARGET_GK7202V300) += phy-gk7202v300-usb.o
+obj-$(CONFIG_TARGET_GK7205V200) += phy-gk7205v200-usb.o
+obj-$(CONFIG_TARGET_GK7205V300) += phy-gk7205v300-usb.o
+obj-$(CONFIG_TARGET_GK7605V100) += phy-gk7605v100-usb.o

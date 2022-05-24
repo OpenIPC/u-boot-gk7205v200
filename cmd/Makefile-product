@@ -1,0 +1,28 @@
+ifeq ($(CONFIG_AUDIO_ENABLE),y)
+obj-y += cmd_ao.o
+endif
+
+# Osd command
+ifeq ($(CONFIG_OSD_ENABLE),y)
+# for dec
+ifneq ($(CONFIG_PRODUCTNAME),"gk7205v300")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7205v200")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7202v300")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7605v100")
+obj-y += cmd_dec.o
+endif
+endif
+endif
+endif
+
+# for vo
+ifeq ($(CONFIG_PRODUCTNAME),"gk7205v200")
+obj-y += cmd_vo_gk7205v200.o
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7205v300")
+obj-y += cmd_vo_gk7205v200.o
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7202v300")
+obj-y += cmd_vo_gk7205v200.o
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7605v100")
+obj-y += cmd_vo_gk7205v200.o
+endif
+endif

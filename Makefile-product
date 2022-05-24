@@ -1,0 +1,57 @@
+# FOR AUDIO
+ifeq ($(CONFIG_AUDIO_ENABLE), y)
+ifeq ($(CONFIG_PRODUCTNAME),"gk7205v200")
+libs-y += product/audio/acodec/v750/
+libs-y += product/audio/ao/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7205v300")
+libs-y += product/audio/acodec/v750/
+libs-y += product/audio/ao/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7202v300")
+libs-y += product/audio/acodec/v750/
+libs-y += product/audio/ao/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7605v100")
+libs-y += product/audio/acodec/v750/
+libs-y += product/audio/ao/gk7205v200/
+endif
+endif
+
+ifeq ($(CONFIG_OSD_ENABLE),y)
+# FOR DEC of all chip
+ifneq ($(CONFIG_PRODUCTNAME),"gk7205v200")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7205v300")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7202v300")
+ifneq ($(CONFIG_PRODUCTNAME),"gk7605v100")
+libs-y += ./product/osd/dec/
+endif
+endif
+endif
+endif
+
+# FOR VO,HDMI,MIPI_Tx
+ifeq ($(CONFIG_PRODUCTNAME),"gk7205v300")
+libs-y += ./product/osd/vo/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7205v200")
+libs-y += ./product/osd/vo/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7202v300")
+libs-y += ./product/osd/vo/gk7205v200/
+else ifeq ($(CONFIG_PRODUCTNAME),"gk7605v100")
+libs-y += ./product/osd/vo/gk7205v200/
+else
+$(warning "warning: "$(CONFIG_PRODUCTNAME)" is invalid")
+endif
+endif
+
+ifndef CONFIG_MINI_BOOT
+ifdef CONFIG_CIPHER_ENABLE
+libs-y += product/otp/
+libs-y += product/cipher/
+endif
+endif
+
+ifeq ($(CONFIG_AUTO_UPDATE),y)
+libs-y += product/update/
+endif
+
+ifeq ($(CONFIG_GK_I2C),y)
+libs-y += product/i2c/
+endif

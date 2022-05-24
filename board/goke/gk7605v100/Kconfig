@@ -1,0 +1,15 @@
+if TARGET_GK7605V100
+
+config SYS_BOARD
+	default "gk7605v100"
+
+config SYS_VENDOR
+	default "goke"
+
+config SYS_SOC
+	default "gk7605v100"
+
+config SYS_CONFIG_NAME
+	default "gk7605v100"
+
+endif

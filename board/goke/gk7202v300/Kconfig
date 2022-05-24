@@ -1,0 +1,15 @@
+if TARGET_GK7202V300
+
+config SYS_BOARD
+	default "gk7202v300"
+
+config SYS_VENDOR
+	default "goke"
+
+config SYS_SOC
+	default "gk7202v300"
+
+config SYS_CONFIG_NAME
+	default "gk7202v300"
+
+endif
