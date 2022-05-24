@@ -881,8 +881,6 @@ void fmc100_get_bp_lock_level(struct fmc_host *host)
 	case MID_CFEON:
 	case MID_SPANSION:
 	case MID_FM:
-	case MID_XTX:
-	case MID_SK:
 		host->bp_num = BP_NUM_3;
 		host->level = fmc100_bp_to_level(host);
 		break;
@@ -907,6 +905,11 @@ void fmc100_get_bp_lock_level(struct fmc_host *host)
 	case MID_MICRON:
 	case MID_PARAGON:
 		return;
+	case MID_XTX:
+	case MID_SK:
+		host->bp_num = BP_NUM_4;
+		host->level = fmc100_bp_to_level(host);
+		break;
 	default:
 		goto usage;
 	}

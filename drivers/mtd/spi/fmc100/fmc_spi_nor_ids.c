@@ -342,22 +342,22 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		"MX25L6436F",  {0xc2, 0x20, 0x17}, 3, _8M,    _64K, 3,
 		{
 			&read_std(0, INFINITE, 50), /* 50MHz */
-			&read_fast(1, INFINITE, 133), /* 133MHz */
-			&read_dual(1, INFINITE, 133), /* 133MHz */
-			&read_dual_addr(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
-			&read_quad_addr(3, INFINITE, 133), /* 133MHz */
+			&read_fast(1, INFINITE, 80), /* 133MHz */
+			&read_dual(1, INFINITE, 80), /* 133MHz */
+			//&read_dual_addr(1, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad_addr(3, INFINITE, 133), /* 133MHz */
 			0
 		},
 
 		{
-			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad_addr(0, 256, 133), /* 133MHz */
+			&write_std(0, 256, 80), /* 133MHz */
+			//&write_quad_addr(0, 256, 133), /* 133MHz */
 			0
 		},
 
 		{
-			&erase_sector_64k(0, _64K, 133), /* 133MHz */
+			&erase_sector_64k(0, _64K, 80), /* 133MHz */
 			0
 		},
 		&spi_driver_mx25l25635e,
