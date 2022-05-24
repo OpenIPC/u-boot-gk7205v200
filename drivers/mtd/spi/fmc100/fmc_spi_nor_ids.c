@@ -1875,6 +1875,47 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		&spi_driver_general,
 	},
 
+	/* SK */
+	{
+		"SK25P64", {0x25, 0x60, 0x17}, 3, _8M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 80), /* 80MHz */
+			&read_fast(1, INFINITE, 104), /* 104MHz */
+			&read_dual(1, INFINITE, 104), /* 104MHz */
+			&read_dual_addr(1, INFINITE, 104), /* 104MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 104), /* 104MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 104), /* 104MHz */
+			0
+		},
+		&spi_driver_no_qe,
+	},
+
+	{
+		"SK25P128", {0x25, 0x60, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 50), /* 50MHz */
+			&read_fast(1, INFINITE, 104), /* 104MHz */
+			&read_dual(1, INFINITE, 104), /* 104MHz */
+			&read_dual_addr(1, INFINITE, 104), /* 104MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 104), /* 104MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 104), /* 104MHz */
+			0
+		},
+		&spi_driver_no_qe,
+	},
+
 	{0, {0}, 0, 0, 0, 0, {0}, {0}, {0}, NULL},
 };
 
