@@ -619,7 +619,7 @@ CHECKFLAGS     += $(NOSTDINC_FLAGS)
 # FIX ME
 cpp_flags := $(KBUILD_CPPFLAGS) $(PLATFORM_CPPFLAGS) $(UBOOTINCLUDE) \
 							$(NOSTDINC_FLAGS)
-c_flags := $(KBUILD_CFLAGS) $(cpp_flags)
+c_flags := $(KBUILD_CFLAGS) $(cpp_flags) $(KCFLAGS)
 
 #########################################################################
 # U-Boot objects....order is important (i.e. start must be first)
