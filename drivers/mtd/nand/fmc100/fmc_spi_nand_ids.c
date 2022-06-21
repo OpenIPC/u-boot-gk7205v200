@@ -178,15 +178,15 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80), /* 80MHz */
 			&read_dual(1, INFINITE, 80), /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80), /* 80MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(2, INFINITE, 80), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(2, INFINITE, 80), /* 80MHz */
 			0
 		},
 		.write     = {
 			/* dummy clock:0byte, erase size:64K,
 			 * clock frq:80MHz */
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -213,13 +213,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80), /* 80MHz */
 			&read_dual(1, INFINITE, 80), /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80), /* 80MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(2, INFINITE, 80), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(2, INFINITE, 80), /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -244,13 +244,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 108),  /* 108MHz */
 			&read_dual(1, INFINITE, 108),  /* 108MHz */
 			&read_dual_addr(1, INFINITE, 108),  /* 108MHz */
-			&read_quad(1, INFINITE, 108),  /* 108MHz */
-			&read_quad_addr(2, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 108),  /* 108MHz */
+			//&read_quad_addr(2, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 108), /* 108MHz */
+			//&write_quad(0, 256, 108), /* 108MHz */
 			0
 		},
 		.erase     = {
@@ -275,13 +275,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80), /* 80MHz */
 			&read_dual(1, INFINITE, 80), /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80), /* 80MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(2, INFINITE, 80), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(2, INFINITE, 80), /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -306,13 +306,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80), /* 80MHz */
 			&read_dual(1, INFINITE, 80), /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80), /* 80MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(2, INFINITE, 80), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(2, INFINITE, 80), /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -336,12 +336,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 80),  /* 80MHz */
 			&read_dual(1, INFINITE, 80),  /* 80MHz */
-			&read_quad(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad(1, INFINITE, 80),  /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -365,12 +365,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -394,12 +394,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -424,13 +424,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -455,13 +455,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -485,13 +485,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -516,13 +516,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -547,13 +547,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -579,13 +579,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -610,13 +610,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104),  /* 104MHz */
 			&read_dual(1, INFINITE, 104),  /* 104MHz */
 			&read_dual_addr(2, INFINITE, 104),  /* 104MHz */
-			&read_quad(1, INFINITE, 104),  /* 104MHz */
-			&read_quad_addr(4, INFINITE, 104),  /* 104MHz */
+			//&read_quad(1, INFINITE, 104),  /* 104MHz */
+			//&read_quad_addr(4, INFINITE, 104),  /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -641,13 +641,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -672,13 +672,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104), /* 104MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -703,13 +703,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104),  /* 104MHz */
 			&read_dual(1, INFINITE, 104),  /* 104MHz */
 			&read_dual_addr(2, INFINITE, 104),  /* 104MHz */
-			&read_quad(1, INFINITE, 104),  /* 104MHz */
-			&read_quad_addr(4, INFINITE, 104),  /* 104MHz */
+			//&read_quad(1, INFINITE, 104),  /* 104MHz */
+			//&read_quad_addr(4, INFINITE, 104),  /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104), /* 104MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -734,13 +734,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(1, INFINITE, 104),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -765,13 +765,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(1, INFINITE, 104),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -795,13 +795,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80),
 			&read_dual(1, INFINITE, 80),
 			&read_dual_addr(2, INFINITE, 80),
-			&read_quad(1, INFINITE, 80),
-			&read_quad_addr(4, INFINITE, 80),
+			//&read_quad(1, INFINITE, 80),
+			//&read_quad_addr(4, INFINITE, 80),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80),
-			&write_quad(0, 256, 80),
+			//&write_quad(0, 256, 80),
 			0
 		},
 		.erase     = {
@@ -825,13 +825,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(1, INFINITE, 104),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -856,13 +856,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(1, INFINITE, 120),  /* 120MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 120),  /* 120MHz */
+			//&write_quad(0, 256, 120),  /* 120MHz */
 			0
 		},
 		.erase     = {
@@ -887,13 +887,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),  /* 120MHz */
 			&read_dual(1, INFINITE, 120),  /* 120MHz */
 			&read_dual_addr(1, INFINITE, 120),  /* 120MHz */
-			&read_quad(1, INFINITE, 120),  /* 120MHz */
-			&read_quad_addr(2, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 120),  /* 120MHz */
+			//&read_quad_addr(2, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104), /* 104MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -918,13 +918,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(2, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(2, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -949,13 +949,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(2, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(2, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -978,12 +978,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1006,12 +1006,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104), /* 104MHz */
+			//&write_quad(0, 256, 104), /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1034,12 +1034,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1062,12 +1062,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1090,12 +1090,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1118,12 +1118,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 		.read      = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1148,13 +1148,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 108),  /* 108MHz */
 			&read_dual(1, INFINITE, 108),  /* 108MHz */
 			&read_dual_addr(1, INFINITE, 108),  /* 108MHz */
-			&read_quad(1, INFINITE, 108),  /* 108MHz */
-			&read_quad_addr(1, INFINITE, 108),  /* 108MHz */
+			//&read_quad(1, INFINITE, 108),  /* 108MHz */
+			//&read_quad_addr(1, INFINITE, 108),  /* 108MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 108), /* 108MHz */
+			//&write_quad(0, 256, 108), /* 108MHz */
 			0
 		},
 		.erase     = {
@@ -1179,13 +1179,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 108),  /* 108MHz */
 			&read_dual(1, INFINITE, 108),  /* 108MHz */
 			&read_dual_addr(1, INFINITE, 108),  /* 108MHz */
-			&read_quad(1, INFINITE, 108),  /* 108MHz */
-			&read_quad_addr(1, INFINITE, 108),  /* 108MHz */
+			//&read_quad(1, INFINITE, 108),  /* 108MHz */
+			//&read_quad_addr(1, INFINITE, 108),  /* 108MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 108), /* 108MHz */
+			//&write_quad(0, 256, 108), /* 108MHz */
 			0
 		},
 		.erase     = {
@@ -1210,13 +1210,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80),  /* 80MHz */
 			&read_dual(1, INFINITE, 80),  /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80),  /* 80MHz */
-			&read_quad(1, INFINITE, 80),  /* 80MHz */
-			&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1241,13 +1241,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80),  /* 80MHz */
 			&read_dual(1, INFINITE, 80),  /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80),  /* 80MHz */
-			&read_quad(1, INFINITE, 80),  /* 80MHz */
-			&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 24),  /* 24MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1271,7 +1271,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1299,7 +1299,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1327,12 +1327,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 133), /* 133MHz */
 			&read_dual(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad(0, 256, 133), /* 133MHz */
+			//&write_quad(0, 256, 133), /* 133MHz */
 			0
 		},
 		.erase     = {
@@ -1356,7 +1356,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1384,7 +1384,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1412,12 +1412,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 133), /* 133MHz */
 			&read_dual(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad(0, 256, 133), /* 133MHz */
+			//&write_quad(0, 256, 133), /* 133MHz */
 			0
 		},
 		.erase     = {
@@ -1441,7 +1441,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1469,7 +1469,7 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
@@ -1497,12 +1497,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 133), /* 133MHz */
 			&read_dual(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad(0, 256, 133), /* 133MHz */
+			//&write_quad(0, 256, 133), /* 133MHz */
 			0
 		},
 		.erase     = {
@@ -1526,12 +1526,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 133), /* 133MHz */
 			&read_dual(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad(0, 256, 133), /* 133MHz */
+			//&write_quad(0, 256, 133), /* 133MHz */
 			0
 		},
 		.erase     = {
@@ -1556,13 +1556,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 60), /* 60MHz */
 			&read_dual(1, INFINITE, 60), /* 60MHz */
 			&read_dual_addr(1, INFINITE, 60), /* 60MHz */
-			&read_quad(1, INFINITE, 60), /* 60MHz */
-			&read_quad_addr(1, INFINITE, 60), /* 60MHz */
+			//&read_quad(1, INFINITE, 60), /* 60MHz */
+			//&read_quad_addr(1, INFINITE, 60), /* 60MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1587,13 +1587,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 60), /* 60MHz */
 			&read_dual(1, INFINITE, 60), /* 60MHz */
 			&read_dual_addr(1, INFINITE, 60), /* 60MHz */
-			&read_quad(1, INFINITE, 60), /* 60MHz */
-			&read_quad_addr(1, INFINITE, 60), /* 60MHz */
+			//&read_quad(1, INFINITE, 60), /* 60MHz */
+			//&read_quad_addr(1, INFINITE, 60), /* 60MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1618,13 +1618,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 60), /* 60MHz */
 			&read_dual(1, INFINITE, 60), /* 60MHz */
 			&read_dual_addr(1, INFINITE, 60), /* 60MHz */
-			&read_quad(1, INFINITE, 60), /* 60MHz */
-			&read_quad_addr(1, INFINITE, 60), /* 60MHz */
+			//&read_quad(1, INFINITE, 60), /* 60MHz */
+			//&read_quad_addr(1, INFINITE, 60), /* 60MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1648,12 +1648,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1678,13 +1678,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 80),  /* 80MHz */
 			&read_dual(1, INFINITE, 80),  /* 80MHz */
 			&read_dual_addr(1, INFINITE, 80),  /* 80MHz */
-			&read_quad(1, INFINITE, 80),  /* 80MHz */
-			&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad(1, INFINITE, 80),  /* 80MHz */
+			//&read_quad_addr(1, INFINITE, 80),  /* 80MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 80), /* 80MHz */
+			//&write_quad(0, 256, 80), /* 80MHz */
 			0
 		},
 		.erase     = {
@@ -1709,13 +1709,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 100), /* 100MHz */
 			&read_dual(1, INFINITE, 100), /* 100MHz */
 			&read_dual_addr(1, INFINITE, 100),  /* 100MHz */
-			&read_quad(1, INFINITE, 100),  /* 100MHz */
-			&read_quad_addr(1, INFINITE, 100),  /* 100MHz */
+			//&read_quad(1, INFINITE, 100),  /* 100MHz */
+			//&read_quad_addr(1, INFINITE, 100),  /* 100MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 100),  /* 100MHz */
-			&write_quad(0, 256, 100),  /* 100MHz */
+			//&write_quad(0, 256, 100),  /* 100MHz */
 			0
 		},
 		.erase     = {
@@ -1740,13 +1740,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 100), /* 100MHz */
 			&read_dual(1, INFINITE, 100), /* 100MHz */
 			&read_dual_addr(1, INFINITE, 100),  /* 100MHz */
-			&read_quad(1, INFINITE, 100),  /* 100MHz */
-			&read_quad_addr(1, INFINITE, 100),  /* 100MHz */
+			//&read_quad(1, INFINITE, 100),  /* 100MHz */
+			//&read_quad_addr(1, INFINITE, 100),  /* 100MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 100),  /* 100MHz */
-			&write_quad(0, 256, 100),  /* 100MHz */
+			//&write_quad(0, 256, 100),  /* 100MHz */
 			0
 		},
 		.erase     = {
@@ -1771,13 +1771,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104),
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(1, INFINITE, 104),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1801,13 +1801,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 120),
 			&read_dual(1, INFINITE, 120),
 			&read_dual_addr(1, INFINITE, 120),
-			&read_quad(1, INFINITE, 120),
-			&read_quad_addr(1, INFINITE, 120),
+			//&read_quad(1, INFINITE, 120),
+			//&read_quad_addr(1, INFINITE, 120),
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104),
-			&write_quad(0, 256, 120),
+			//&write_quad(0, 256, 120),
 			0
 		},
 		.erase     = {
@@ -1830,12 +1830,12 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_std(1, INFINITE, 24), /* 24MHz */
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 80), /* 80MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1860,13 +1860,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 40), /* 40MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(2, INFINITE, 40), /* 40MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(2, INFINITE, 40), /* 40MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104), /* 104MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
@@ -1891,13 +1891,13 @@ struct spi_nand_info fmc_spi_nand_flash_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 40), /* 40MHz */
-			&read_quad(1, INFINITE, 104), /* 104MHz */
-			&read_quad_addr(2, INFINITE, 40), /* 40MHz */
+			//&read_quad(1, INFINITE, 104), /* 104MHz */
+			//&read_quad_addr(2, INFINITE, 40), /* 40MHz */
 			0
 		},
 		.write     = {
 			&write_std(0, 256, 104), /* 104MHz */
-			&write_quad(0, 256, 104),  /* 104MHz */
+			//&write_quad(0, 256, 104),  /* 104MHz */
 			0
 		},
 		.erase     = {
