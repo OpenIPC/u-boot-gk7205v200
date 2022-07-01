@@ -1916,6 +1916,30 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		&spi_driver_no_qe,
 	},
 
+	/* GallopMemory 3.3V */
+	{
+		"GM25Q128A", {0x1c, 0x40, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 50),
+			&read_fast(1, INFINITE, 80),
+			//&read_dual(1, INFINITE, 104),
+			//&read_dual_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104),
+			//&read_quad_addr(3, INFINITE, 104),
+			0
+		},
+		{
+			&write_std(0, 256, 80),
+			//&write_quad(0, 256, 104),
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 80),
+			0
+		},
+		&spi_driver_general,
+	},
+
 	{0, {0}, 0, 0, 0, 0, {0}, {0}, {0}, NULL},
 };
 
