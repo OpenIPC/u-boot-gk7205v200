@@ -66,9 +66,8 @@ static inline void writel(unsigned val, unsigned addr)
 #define reg_set(addr, val) writel(val, (unsigned int)(addr))
 
 #define duty_formula(val)  (((unsigned int)((1099 - (val)) * 460) >> 10) - 1)
-#define volt_formula(val) (1287 - ((1514 * (val)) >> 10))
-#define temperature_formula(val)  (((((val) - 117) * 212) >> 10) - 40)
-#define hpm_formula(hpm, temp)  ((hpm) + 4 + ((((temp) - 70) * 205) >> 10))
+#define volt_formula(val) (1297 - ((1514 * (val)) >> 10))
+
 
 void trng_init(void)
 {
@@ -94,7 +93,7 @@ void trng_deinit(void)
 }
 
 /* svb */
-#define SVB_VER             0x10
+#define SVB_VER             0x01
 
 #define CYCLE_NUM 4
 #define  HPM_CORE_REG0 0x120280d8
@@ -192,31 +191,6 @@ static void hpm_check(unsigned int *hpm_core)
 	writel(sysboot10.u32, HPM_CHECK_REG);
 }
 
-static void get_temperature(unsigned int *temperature)
-{
-	unsigned int value;
-
-	value = readl(TSENSOR_STATUS0);
-	value = value & 0x3ff;
-
-	if (value <= TEMPERATURE_MIN)
-		*temperature = -40; /* -40: temperature value */
-	else if (value >= TEMPERATURE_MAX)
-		*temperature = 110; /* 110: temperature value */
-	else
-		*temperature = temperature_formula(value);
-}
-
-static void adjust_hpm(unsigned int *hpm_core, unsigned int temperature)
-{
-	/* 283 70: hpm_core and temperature Threshold */
-	if ((*hpm_core >= 283) && (temperature >= 70))
-		*hpm_core = hpm_formula(*hpm_core, temperature);
-	/* 222 70: hpm_core and temperature Threshold */
-	else if ((*hpm_core <= 222) && (temperature >= 70))
-		*hpm_core = *hpm_core - NUM_4;
-}
-
 static void set_hpm_core_volt(unsigned int hpm_core_value)
 {
 	unsigned int volt;
@@ -224,9 +198,9 @@ static void set_hpm_core_volt(unsigned int hpm_core_value)
 	unsigned int otp_vmin_core = readl(OTP_HPM_CORE_REG);
 
 	if (hpm_core_value <= HPM_CORE_VALUE_MIN)
-		volt = 1006; /* 1006: volt value */
+		volt = 1016; /* 1016: volt value */
 	else if (hpm_core_value >= HPM_CORE_VALUE_MAX)
-		volt = 829; /* 829: volt value */
+		volt = 839; /* 839: volt value */
 	else
 		volt = volt_formula(hpm_core_value);
 
@@ -241,15 +215,14 @@ static void set_hpm_core_volt(unsigned int hpm_core_value)
 void start_svb(void)
 {
 	unsigned int hpm_core = 0;
-	unsigned int temperature = 0;
+
 
 	unsigned int tmp_reg = readl(SVB_VER_REG);
 	tmp_reg = (tmp_reg & 0xff00ffff) | (SVB_VER << 16); /* Move Left 16bit */
 	writel(tmp_reg, SVB_VER_REG);
 
-	get_temperature(&temperature);
+
 	start_hpm(&hpm_core);
-	adjust_hpm(&hpm_core, temperature);
 	hpm_check(&hpm_core);
 
 	set_hpm_core_volt(hpm_core);
@@ -447,7 +420,7 @@ void start_ddr_training(unsigned int base)
 	struct tr_relate_reg relate_reg;
 	struct tr_relate_reg *reg = &relate_reg;
 
-//	start_svb();
+	start_svb();
 	switch_cpu_freq();
 
 	ddr_boot_prepare(reg);

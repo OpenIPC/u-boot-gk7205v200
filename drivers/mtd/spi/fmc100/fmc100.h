@@ -31,10 +31,14 @@
 #define spi_nor_get_4byte_by_cr(cr) (((cr) & SPI_NOR_CR_4BYTE_MASK) \
 						>> SPI_NOR_CR_4BYTE_SHIFT)
 
-#define SPI_NOR_CR_QE_SHIFT	 1
+#define SPI_NOR_CR_QE_SHIFT	 2
 #define SPI_NOR_CR_QE_MASK	  (1 << SPI_NOR_CR_QE_SHIFT)
 #define spi_nor_get_qe_by_cr(cr)	(((cr) & SPI_NOR_CR_QE_MASK) \
 						>> SPI_NOR_CR_QE_SHIFT)
+#define SPI_NOR_CR_QE_SHIFT_NorMan      2
+#define SPI_NOR_CR_QE_MASK_NorMan        (1 << SPI_NOR_CR_QE_SHIFT_NorMan)
+#define spi_nor_get_qe_by_cr_nm(cr)        (((cr) & SPI_NOR_CR_QE_MASK_NorMan) \
+						>> SPI_NOR_CR_QE_SHIFT_NorMan)
 
 #define SPI_NOR_CR_RST_HOLD_SHIFT   7
 #define SPI_NOR_CR_RST_HOLD_MASK	(1 << SPI_NOR_CR_RST_HOLD_SHIFT)

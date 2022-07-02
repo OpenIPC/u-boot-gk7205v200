@@ -76,6 +76,7 @@ set_read_quad(1, INFINITE, 112);
 set_read_quad(1, INFINITE, 133);
 set_read_quad4b(1, INFINITE, 133);
 
+set_read_quad_addr(3, INFINITE, 50);
 set_read_quad_addr(3, INFINITE, 80);
 set_read_quad_addr4b(3, INFINITE, 80);
 set_read_quad_addr(5, INFINITE, 84);
@@ -189,6 +190,14 @@ static struct spi_drv spi_driver_w25q256fv = {
 	.write_enable = spi_general_write_enable,
 	.entry_4addr = spi_w25q256fv_entry_4addr,
 	.qe_enable = spi_w25q256fv_qe_enable,
+};
+
+#include "fmc100_spi_nm25q128evb.c"
+static struct spi_drv spi_driver_nm25q128evb = {
+	.wait_ready = spi_general_wait_ready,
+	.write_enable = spi_general_write_enable,
+	.entry_4addr = spi_nm25q128evb_entry_4addr,
+	.qe_enable = spi_nm25q128evb_qe_enable,
 };
 
 #include "fmc100_spi_mx25l25635e.c"
@@ -1640,6 +1649,102 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		&spi_driver_no_qe,
 	},
 
+	/* XMC XM25QH64CHIQ 3.3V */
+	{
+		"XM25QH64CHIQ", {0x20, 0x40, 0x17}, 3, _8M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 50), /* 40MHz */
+			&read_fast(1, INFINITE, 133), /* 133MHz */
+			&read_dual(1, INFINITE, 133), /* 133MHz */
+			&read_dual_addr(1, INFINITE, 133), /* 133MHz */
+			&read_quad(1, INFINITE, 133), /* 133MHz */
+			&read_quad_addr(3, INFINITE, 133), /* 133MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 133), /* 133MHz */
+			&write_quad(0, 256, 133),  /* 133MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 133), /* 133MHz */
+			0
+		},
+		&spi_driver_general,
+	},
+
+	/* XMC XM25QH128CHIQ 3.3v */
+	{
+		"XM25QH128CHIQ", {0x20, 0x40, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 50), /* 50MHz */
+			&read_fast(1, INFINITE, 133), /* 133MHz */
+			&read_dual(1, INFINITE, 133), /* 133MHz */
+			&read_dual_addr(1, INFINITE, 133), /* 133MHz */
+			&read_quad(1, INFINITE, 133), /* 133MHz */
+			&read_quad_addr(3, INFINITE, 133), /* 133MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 133), /* 133MHz */
+			&write_quad(0, 256, 133),  /* 133MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 133), /* 133MHz */
+			0
+		},
+		&spi_driver_general,
+	},
+
+	/* CFX GM25Q128ASIG 3.3v */
+	{
+		"GM25Q128ASIG", {0x1C, 0x40, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 55), /* 55MHz */
+			&read_fast(1, INFINITE, 104), /* 104MHz */
+			&read_dual(1, INFINITE, 104), /* 104MHz */
+			&read_dual_addr(1, INFINITE, 104), /* 104MHz */
+			&read_quad(1, INFINITE, 80), /* 80MHz */
+			&read_quad_addr(3, INFINITE, 80), /* 80MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 55), /* 55MHz */
+			&write_quad(0, 256, 80),  /* 180MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 104), /* 104MHz */
+			0
+		},
+		&spi_driver_general,
+	},
+
+	/* Nor-Men NM25Q128EVB 3.3v */
+	{
+		"NM25Q128EVB", {0x52, 0x21, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 55), /* 55MHz */
+			&read_fast(1, INFINITE, 80), /* 104MHz */
+			&read_dual(1, INFINITE, 80), /* 104MHz */
+			&read_dual_addr(1, INFINITE, 80), /* 104MHz */
+			&read_quad(1, INFINITE, 80), /* 80MHz */
+			&read_quad_addr(3, INFINITE, 50), /* 80MHz */
+			0
+		},
+		{
+			&write_std(0, 256, 55), /* 55MHz */
+			&write_quad(0, 256, 80),  /* 180MHz */
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 104), /* 104MHz */
+			0
+		},
+		&spi_driver_nm25q128evb,
+	},
+
 	/* XTX 3.3v */
 	{
 		"XT25F128BSSI/HGU", {0x0B, 0x40, 0x18}, 3, _16M,  _64K, 3,
@@ -1939,6 +2044,31 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		},
 		&spi_driver_general,
 	},
+
+        /* ZB ZB25VQ128ASIG 3.3V */
+        {
+                "ZB25VQ128ASIG", {0x5e, 0x40, 0x18}, 3, _16M,  _64K, 3,
+                {
+                        &read_std(0, INFINITE, 45),
+                        &read_fast(1, INFINITE, 104),
+                        &read_dual(1, INFINITE, 104),
+                        &read_dual_addr(1, INFINITE, 104),
+                        &read_quad(1, INFINITE, 104),
+                        &read_quad_addr(3, INFINITE, 104),
+                        0
+                },
+                {
+                        &write_std(0, 256, 104),
+                        &write_quad(0, 256, 104),
+                        0
+                },
+                {
+                        &erase_sector_64k(0, _64K, 104),
+                        0
+                },
+                &spi_driver_general,
+        },
+	
 
 	{0, {0}, 0, 0, 0, 0, {0}, {0}, {0}, NULL},
 };

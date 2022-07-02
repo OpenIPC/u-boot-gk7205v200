@@ -119,9 +119,9 @@ void usb2_eye_config(void)
 	writel(reg, USB2_PHY_BASE_REG + PHY_ANA_CFG_2_OFFSET);
 
 	/* TX half de-emphasis bit */
-	reg = readl(USB2_PHY_BASE_REG + XVP_PHY_ANA_CFG_2_OFFSET);
+	reg = readl(USB2_PHY_BASE_REG + PHY_ANA_CFG_2_OFFSET);
 	reg |= PHY_HALF_DEEM_BIT;
-	writel(reg, USB2_PHY_BASE_REG + XVP_PHY_ANA_CFG_2_OFFSET);
+	writel(reg, USB2_PHY_BASE_REG + PHY_ANA_CFG_2_OFFSET);
 
 	/* Disconnect reference voltage sel */
 	reg = readl(USB2_PHY_BASE_REG + PHY_ANA_CFG_2_OFFSET);
