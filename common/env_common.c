@@ -201,6 +201,10 @@ int env_import(const char *buf, int check)
 
 		if (crc32(0, ep->data, ENV_SIZE) != crc) {
 			set_default_env("!bad CRC");
+			if (crc == 0xffffffff) {
+				printf("Saving default environment...\n");
+				saveenv();
+			}
 			return 0;
 		}
 	}
