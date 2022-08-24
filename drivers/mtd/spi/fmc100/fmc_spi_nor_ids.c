@@ -1819,20 +1819,20 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		"FM25Q64-SOB-T-G", {0xa1, 0x40, 0x17}, 3, _8M,  _64K, 3,
 		{
 			&read_std(0, INFINITE, 66),
-			&read_fast(1, INFINITE, 104),
-			&read_dual(1, INFINITE, 104),
-			&read_dual_addr(1, INFINITE, 104),
+			//&read_fast(1, INFINITE, 104),
+			//&read_dual(1, INFINITE, 104),
+			//&read_dual_addr(1, INFINITE, 104),
 			//&read_quad(1, INFINITE, 104),
 			//&read_quad_addr(3, INFINITE, 104),
 			0
 		},
 		{
-			&write_std(0, 256, 104),
+			&write_std(0, 256, 33),
 			//&write_quad(0, 256, 104),
 			0
 		},
 		{
-			&erase_sector_64k(0, _64K, 104),
+			&erase_sector_64k(0, _64K, 33),
 			0
 		},
 		&spi_driver_general,
@@ -1843,20 +1843,20 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		"FM25Q128A-SOB-T-G", {0xa1, 0x40, 0x18}, 3, _16M,  _64K, 3,
 		{
 			&read_std(0, INFINITE, 50),
-			&read_fast(1, INFINITE, 104),
-			&read_dual(1, INFINITE, 104),
-			&read_dual_addr(1, INFINITE, 104),
+			//&read_fast(1, INFINITE, 104),
+			//&read_dual(1, INFINITE, 104),
+			//&read_dual_addr(1, INFINITE, 104),
 			//&read_quad(1, INFINITE, 104),
 			//&read_quad_addr(3, INFINITE, 104),
 			0
 		},
 		{
-			&write_std(0, 256, 104),
+			&write_std(0, 256, 33),
 			//&write_quad(0, 256, 104),
 			0
 		},
 		{
-			&erase_sector_64k(0, _64K, 104),
+			&erase_sector_64k(0, _64K, 33),
 			0
 		},
 		&spi_driver_general,
