@@ -50,6 +50,11 @@
 
 #undef CONFIG_SYS_PROMPT
 #define CONFIG_SYS_PROMPT	"OpenIPC # "
+#define CONFIG_AUTOBOOT_KEYED
+#define CONFIG_AUTOBOOT_PROMPT		\
+    "Press Ctrl-c to stop autoboot... %d \n", bootdelay
+#define CONFIG_AUTOBOOT_STOP_STR	"\x3"
+#define AUTOBOOT_KEYED_CTRLC
 
 #define CONFIG_SD_BOOT 1
 #define CONFIG_SPI_BOOT 1
