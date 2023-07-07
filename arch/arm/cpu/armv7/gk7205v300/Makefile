@@ -1,6 +1,6 @@
 PWD           = $(shell pwd)
-SRCDIR        =
-OUTDIR        =
+SRCDIR        ?=
+OUTDIR        ?=
 
 ################################################################################
 CC       := $(CROSS_COMPILE)gcc
@@ -65,10 +65,18 @@ $(BOOT).tmp: $(BOOT).elf
 	$(OBJCOPY) -j .text -O binary $< $(BOOT).text
 	$(OBJCOPY) --gap-fill=0xff -O binary $< $@
 
-$(BOOT).elf: image_data.gzip $(COBJS)
+$(BOOT).elf: LNOBJS image_data.gzip $(COBJS)
 	$(LD) -Bstatic -T u-boot.lds -Ttext $(TEXTBASE) \
 		$(COBJS) -Map $(BOOT).map -o $@
 	$(OBJDUMP) -d  $@ > $@.asm
+
+LNOBJS:
+	@ln -sf ../../../../../drivers/ddr/goke/default/ddr_training_impl.o .
+	@ln -sf ../../../../../drivers/ddr/goke/default/ddr_training_ctl.o .
+	@ln -sf ../../../../../drivers/ddr/goke/default/ddr_training_boot.o .
+	@ln -sf ../../../../../drivers/ddr/goke/default/ddr_training_console.o .
+	@ln -sf ../../../../../drivers/ddr/goke/$(SOC)/ddr_training_custom.o .
+	@ln -sf ../../../lib/div0.o .
 
 .PHONY: regfile
 regfile:
@@ -86,7 +94,7 @@ regfile:
 
 # -1 : --fast      -9 : --best
 image_data.gzip: $(BINIMAGE)
-	$(OUTDIR)/../../../tools/utils/bin/gzip -fNqc -7 $< > $@
+	$(OUTDIR)/tools/hi_gzip/bin/gzip -fNqc -7 $< > $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -Wall -Wstrict-prototypes \
@@ -97,4 +105,3 @@ image_data.gzip: $(BINIMAGE)
 
 image_data.o: image_data.S image_data.gzip
 	$(CC) -D__ASSEMBLY__ $(CFLAGS) -o $@ $< -c
-
