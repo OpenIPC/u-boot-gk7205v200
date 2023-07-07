@@ -3,7 +3,7 @@
 export CROSS_COMPILE=arm-linux-gnueabi-
 mkdir -p output
 
-for soc in gk7202v300 gk7205v200 gk7205v300 gk7605v100; do
+for soc in gk7205v300; do
 
 make clean
 cp configs/${soc}_defconfig .config
