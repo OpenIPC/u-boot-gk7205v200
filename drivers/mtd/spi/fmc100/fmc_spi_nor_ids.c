@@ -1681,8 +1681,8 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 			&read_fast(1, INFINITE, 133), /* 133MHz */
 			&read_dual(1, INFINITE, 133), /* 133MHz */
 			&read_dual_addr(1, INFINITE, 133), /* 133MHz */
-			&read_quad(1, INFINITE, 133), /* 133MHz */
-			&read_quad_addr(3, INFINITE, 133), /* 133MHz */
+			//&read_quad(1, INFINITE, 133), /* 133MHz */
+			//&read_quad_addr(3, INFINITE, 133), /* 133MHz */
 			0
 		},
 		{
@@ -1705,8 +1705,8 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 			&read_fast(1, INFINITE, 104), /* 104MHz */
 			&read_dual(1, INFINITE, 104), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 104), /* 104MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(3, INFINITE, 80), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(3, INFINITE, 80), /* 80MHz */
 			0
 		},
 		{
@@ -1729,8 +1729,8 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 			&read_fast(1, INFINITE, 80), /* 104MHz */
 			&read_dual(1, INFINITE, 80), /* 104MHz */
 			&read_dual_addr(1, INFINITE, 80), /* 104MHz */
-			&read_quad(1, INFINITE, 80), /* 80MHz */
-			&read_quad_addr(3, INFINITE, 50), /* 80MHz */
+			//&read_quad(1, INFINITE, 80), /* 80MHz */
+			//&read_quad_addr(3, INFINITE, 50), /* 80MHz */
 			0
 		},
 		{
@@ -2053,8 +2053,8 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
                         &read_fast(1, INFINITE, 104),
                         &read_dual(1, INFINITE, 104),
                         &read_dual_addr(1, INFINITE, 104),
-                        &read_quad(1, INFINITE, 104),
-                        &read_quad_addr(3, INFINITE, 104),
+                        //&read_quad(1, INFINITE, 104),
+                        //&read_quad_addr(3, INFINITE, 104),
                         0
                 },
                 {
