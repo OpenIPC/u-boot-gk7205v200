@@ -1687,7 +1687,7 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		},
 		{
 			&write_std(0, 256, 133), /* 133MHz */
-			&write_quad(0, 256, 133),  /* 133MHz */
+			//&write_quad(0, 256, 133),  /* 133MHz */
 			0
 		},
 		{
@@ -1711,7 +1711,7 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		},
 		{
 			&write_std(0, 256, 55), /* 55MHz */
-			&write_quad(0, 256, 80),  /* 180MHz */
+			//&write_quad(0, 256, 80),  /* 180MHz */
 			0
 		},
 		{
@@ -1735,7 +1735,7 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		},
 		{
 			&write_std(0, 256, 55), /* 55MHz */
-			&write_quad(0, 256, 80),  /* 180MHz */
+			//&write_quad(0, 256, 80),  /* 180MHz */
 			0
 		},
 		{
@@ -2059,7 +2059,7 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
                 },
                 {
                         &write_std(0, 256, 104),
-                        &write_quad(0, 256, 104),
+                        //&write_quad(0, 256, 104),
                         0
                 },
                 {
