@@ -455,7 +455,7 @@ The following options need to be configured:
 
 		CONFIG_SYS_BIG_ENDIAN, CONFIG_SYS_LITTLE_ENDIAN
 
-		Defines the endianess of the CPU. Implementation of those
+		Defines the endianness of the CPU. Implementation of those
 		values is arch specific.
 
 		CONFIG_SYS_FSL_DDR
@@ -488,7 +488,7 @@ The following options need to be configured:
 		CONFIG_SYS_FSL_DDR1
 		Board config to use DDR1. It can be enabled for SoCs with
 		Freescale DDR1 or DDR2 controllers, depending on the board
-		implemetation.
+		implementation.
 
 		CONFIG_SYS_FSL_DDR2
 		Board config to use DDR2. It can be enabled for SoCs with
@@ -1215,11 +1215,11 @@ The following options need to be configured:
 		Support for AT91RM9200 EMAC.
 
 			CONFIG_RMII
-			Define this to use reduced MII inteface
+			Define this to use reduced MII interface
 
 			CONFIG_DRIVER_AT91EMAC_QUIET
 			If this defined, the driver is quiet.
-			The driver doen't show link status messages.
+			The driver don't show link status messages.
 
 		CONFIG_CALXEDA_XGMAC
 		Support for the Calxeda XGMAC device
@@ -1440,7 +1440,7 @@ The following options need to be configured:
 - ULPI Layer Support:
 		The ULPI (UTMI Low Pin (count) Interface) PHYs are supported via
 		the generic ULPI layer. The generic layer accesses the ULPI PHY
-		via the platform viewport, so you need both the genric layer and
+		via the platform viewport, so you need both the generic layer and
 		the viewport enabled. Currently only Chipidea/ARC based
 		viewport is supported.
 		To enable the ULPI layer support, define CONFIG_USB_ULPI and
@@ -1509,7 +1509,7 @@ The following options need to be configured:
 		we use a static buffer to copy the file into and then write
 		the buffer once we've been given the whole file.  Define
 		this to the maximum filesize (in bytes) for the buffer.
-		Default is 4 MiB if undefined.
+		Default is 4 MB if undefined.
 
 		DFU_DEFAULT_POLL_TIMEOUT
 		Poll timeout [ms], is the timeout a device can send to the
@@ -3292,7 +3292,7 @@ FIT uImage format:
 		must not be both defined at the same time.
 
 		CONFIG_SPL_STACK
-		Adress of the start of the stack SPL will use
+		Address of the start of the stack SPL will use
 
 		CONFIG_SPL_PANIC_ON_RAW_IMAGE
 		When defined, SPL will panic() if the image it has
@@ -3309,7 +3309,7 @@ FIT uImage format:
 		if the image it has loaded does not have a signature.
 
 		CONFIG_SPL_RELOC_STACK
-		Adress of the start of the stack SPL will use after
+		Address of the start of the stack SPL will use after
 		relocation.  If unspecified, this is equal to
 		CONFIG_SPL_STACK.
 
@@ -3545,7 +3545,7 @@ Configuration Settings:
 		This memory can be used as secure memory. A variable
 		gd->arch.secure_ram is used to track the location. In systems
 		the RAM base is not zero, or RAM is divided into banks,
-		this variable needs to be recalcuated to get the address.
+		this variable needs to be recalculated to get the address.
 
 - CONFIG_SYS_MEM_TOP_HIDE:
 		If CONFIG_SYS_MEM_TOP_HIDE is defined in the board config header,
@@ -4614,7 +4614,7 @@ Low Level (hardware related) configuration options:
 		NOTE : currently only supported on AM335x platforms.
 
 - CONFIG_SPL_AM33XX_ENABLE_RTC32K_OSC:
-		Enables the RTC32K OSC on AM33xx based plattforms
+		Enables the RTC32K OSC on AM33xx based platforms
 
 - CONFIG_SYS_NAND_NO_SUBPAGE_WRITE
 		Option to disable subpage write in NAND driver
@@ -4858,7 +4858,7 @@ flinfo	- print FLASH memory information
 nand	- NAND memory operations (see doc/README.nand)
 bdinfo	- print Board Info structure
 iminfo	- print header information for application image
-coninfo - print console devices and informations
+coninfo - print console devices and information
 ide	- IDE sub-system
 loop	- infinite loop on address range
 loopw	- infinite write loop on address range
