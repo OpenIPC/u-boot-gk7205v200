@@ -306,6 +306,8 @@ static struct spi_drv spi_driver_issi = {
  *      GD		GD25LQ64C		8M	64K     1V8
  *      GD		GD25Q32			4M	64K     3V3
  *      GD		GD25Q16C		2M	64K     3V3
+ *      GM              GM25Q64ASIG             8M      64K     3V3
+ *      GM              GM25Q128ASIG            16M     64K     3V3
  *      Paragon     	PN25F16S		2M	64K     3V3
  *      Paragon     	PN25F32S		4M	64K     3V3
  *      XMC		XM25QH64AHIG        	8M	64K 	3V3
@@ -1696,6 +1698,30 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 		},
 		&spi_driver_general,
 	},
+
+        /* CFX GM25Q64ASIG 3.3v */
+        {
+                "GM25Q64ASIG", {0x1C, 0x40, 0x17}, 3, _8M,  _64K, 3,
+                {
+                        &read_std(0, INFINITE, 55), /* 55MHz */
+                        &read_fast(1, INFINITE, 104), /* 104MHz */
+                        &read_dual(1, INFINITE, 104), /* 104MHz */
+                        &read_dual_addr(1, INFINITE, 104), /* 104MHz */
+                        &read_quad(1, INFINITE, 80), /* 80MHz */
+                        &read_quad_addr(3, INFINITE, 80), /* 80MHz */
+                        0
+                },
+                {
+                        &write_std(0, 256, 55), /* 55MHz */
+                        &write_quad(0, 256, 80),  /* 180MHz */
+                        0
+                },
+                {
+                        &erase_sector_64k(0, _64K, 104), /* 104MHz */
+                        0
+                },
+                &spi_driver_general,
+        },
 
 	/* CFX GM25Q128ASIG 3.3v */
 	{
