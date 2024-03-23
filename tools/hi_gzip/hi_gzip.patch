@@ -1,0 +1,26 @@
+diff --git a/gzip.h b/gzip.h
+index f298b47..c825c4c 100644
+--- a/gzip.h
++++ b/gzip.h
+@@ -180,7 +180,7 @@ typedef int file_t;     /* Do not use stdio */
+ #define ASCII   1
+ 
+ #ifndef WSIZE
+-#  define WSIZE 0x8000     /* window size--must be a power of two, and */
++#  define WSIZE 0x2000     /* window size--must be a power of two, and */
+ #endif                     /*  at least 32K for zip's deflate method */
+ 
+ #define MIN_MATCH  3
+diff --git a/lib/match.c b/lib/match.c
+index 41fb03e..983b422 100644
+--- a/lib/match.c
++++ b/lib/match.c
+@@ -68,7 +68,7 @@
+ #define MAX_MATCH	258
+ #define MAX_MATCH2	$128 /* MAX_MATCH/2-1 */
+ #define MIN_MATCH	3
+-#define    WSIZE	$32768
++#define    WSIZE	$8192
+ #define MAX_DIST	WSIZE - MAX_MATCH - MIN_MATCH - 1
+ 
+         .globl	_match_init
