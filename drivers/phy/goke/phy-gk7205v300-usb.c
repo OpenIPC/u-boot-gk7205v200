@@ -44,6 +44,9 @@
 #define RG_PLL_EN_VAL			0x0003
 #define PHY_PLL_OFFSET			0x0014
 
+#define USB_PWREN_POLARITY_REG	0x1202801C
+#define USB_PWREN_POLARITY_VAL	0x0004009F
+
 #define USB_VBUS_IO_CONFIG_REG	0x100c007C
 #define USB_VBUS_IO_CONFIG_VAL	0x0431
 
@@ -210,6 +213,10 @@ void phy_usb_init_crg_clk(int index)
 void phy_usb_init(int index)
 {
 	unsigned int reg;
+
+	/* PWREN invert polarity */
+	reg = USB_PWREN_POLARITY_VAL;
+	writel(reg, USB_PWREN_POLARITY_REG);
 
 	/* VBUS config */
 	reg = USB_VBUS_IO_CONFIG_VAL;
