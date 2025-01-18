@@ -201,6 +201,11 @@ int env_import(const char *buf, int check)
 
 		if (crc32(0, ep->data, ENV_SIZE) != crc) {
 			set_default_env("!bad CRC");
+
+			char msize[16];
+			sprintf(msize, "%dM", gd->ram_size / 1024 / 1024);
+			setenv("totalmem", msize);
+
 			if (crc == 0xffffffff) {
 				printf("Saving default environment...\n");
 				saveenv();
