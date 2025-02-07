@@ -17,12 +17,13 @@ DDR_CMD     := ddr_cmd
 CMD_TEXT_BASE := $(shell grep '^\#define.*DDR_TRAINING_RUN_STACK' $(TOPDIR)/drivers/ddr/goke/$(SOC)/ddr_training_custom.h|awk '{print $$3}')
 STACK_POINT   := $(CMD_TEXT_BASE)
 
-COBJS       := ddr_training_uart.o ddr_training_custom.o ddr_training_cmd.o ddr_training_impl.o ddr_training_ctl.o ddr_training_console.o
+COBJS       := ddr_training_uart.o ../../$(SOC)/ddr_training_custom.o ddr_training_cmd.o ../ddr_training_impl.o ../ddr_training_ctl.o ../ddr_training_console.o
 DEPS        := $(COBJS:.o=.d) $(START:.o=.d)
+
 
 CFLAGS   := -Os -pipe  \
 	-DCMD_TEXT_BASE=$(CMD_TEXT_BASE) -DSTACK_POINT=$(STACK_POINT) \
-	-fno-builtin -ffreestanding -I./ -I$(TOPDIR)/../../../source/bootloader/u-boot/include -I../ \
+	-fno-builtin -ffreestanding -I./ -I$(TOPDIR)/include -I../ \
 	-DDDR_TRAINING_CMD -I$(TOPDIR)/drivers/ddr/goke/$(SOC)/
 
 CFLAGS += $(PLATFORM_RELFLAGS) $(PLATFORM_CPPFLAGS)
