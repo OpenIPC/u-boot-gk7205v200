@@ -6,7 +6,9 @@
 #include <asm/io.h>
 #include <spi_flash.h>
 #include <linux/mtd/mtd.h>
+#if defined(CONFIG_FMC_SPI_NAND)
 #include <nand.h>
+#endif
 #include <netdev.h>
 #include <mmc.h>
 #include <asm/sections.h>
@@ -31,11 +33,15 @@ int get_boot_media(void)
 
 	switch (boot_mode) {
 	case BOOT_FROM_SPI:
+#if defined(CONFIG_FMC_SPI_NAND)
 		spi_device_mode = get_spi_device_type(reg_val);
 		if (spi_device_mode)
 			boot_media = BOOT_MEDIA_NAND;
 		else
 			boot_media = BOOT_MEDIA_SPIFLASH;
+#else
+    boot_media = BOOT_MEDIA_SPIFLASH;
+#endif
 		break;
 	case BOOT_FROM_EMMC:
 		boot_media = BOOT_MEDIA_EMMC;
@@ -77,11 +83,15 @@ static void boot_flag_init(void)
 
 	switch (boot_mode) {
 	case BOOT_FROM_SPI:
+#if defined(CONFIG_FMC_SPI_NAND)
 		spi_device_mode = get_spi_device_type(reg);
 		if (spi_device_mode)
 			boot_media = BOOT_MEDIA_NAND;
 		else
 			boot_media = BOOT_MEDIA_SPIFLASH;
+#else
+		boot_media = BOOT_MEDIA_SPIFLASH;
+#endif
 		break;
 	case BOOT_FROM_EMMC:    /* emmc mode */
 		boot_media = BOOT_MEDIA_EMMC;
@@ -142,6 +152,7 @@ int data_to_spiflash(void)
 	return 0; /* 0:success */
 }
 
+#if defined(CONFIG_FMC_SPI_NAND)
 int data_to_nandflash(void)
 {
 	struct mtd_info *nand_flash = NULL;
@@ -177,6 +188,7 @@ int data_to_nandflash(void)
 	unmap_physmem(buf, UBOOT_DATA_SIZE);
 	return 0;
 }
+#endif
 
 int data_to_emmc(void)
 {
@@ -213,11 +225,13 @@ int save_bootdata_to_flash(void)
 			if (ret != 0)
 				return ret;
 		}
+#if defined(CONFIG_FMC_SPI_NAND)
 		if (boot_media == BOOT_MEDIA_NAND) {
 			ret = data_to_nandflash();
 			if (ret != 0)
 				return ret;
 		}
+#endif
 #endif
 #if defined(CONFIG_SUPPORT_EMMC_BOOT)
 		if (boot_media == BOOT_MEDIA_EMMC) {
