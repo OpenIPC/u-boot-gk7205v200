@@ -1,0 +1,139 @@
+name: Build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Modern Kbuild u-boot: defconfig from configs/${soc}_defconfig,
+        # `cp reg_info_${soc}.bin .reg`, then `make` — output is
+        # u-boot.bin directly (no LZMA mini-boot wrapper).
+        soc: [gk7202v300, gk7205v200, gk7205v300, gk7605v100]
+
+    steps:
+      - name: Install 32-bit libs
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq zlib1g:i386 libc6:i386 libstdc++6:i386
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache toolchain
+        id: cache-tc
+        uses: actions/cache@v4
+        with:
+          path: toolchain
+          key: arm-hisiv300-linux-v1
+
+      - name: Download toolchain
+        if: steps.cache-tc.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v1 -R OpenIPC/toolchains \
+            -p 'arm-hisiv300-linux.tar.bz2'
+          mkdir -p toolchain
+          tar xjf arm-hisiv300-linux.tar.bz2 -C toolchain
+          rm arm-hisiv300-linux.tar.bz2
+          ls toolchain/arm-hisiv300-linux/bin/arm-hisiv300-linux-uclibcgnueabi-gcc
+
+      - name: Build
+        run: |
+          export PATH="$PWD/toolchain/arm-hisiv300-linux/bin:$PATH"
+          export CROSS_COMPILE=arm-hisiv300-linux-uclibcgnueabi-
+          which ${CROSS_COMPILE}gcc
+          # The drivers/ddr/goke/default/cmd_bin/ Makefile lists COBJS
+          # that include files from sibling directories without VPATH:
+          #   ../ddr_training_{impl,ctl,console}.c
+          #   ../../${SOC}/ddr_training_custom.c
+          # The repo ships a prebuilt ddr_cmd.bin in cmd_bin/, but the
+          # parent's `ddr_training_cmd_bin` target always re-invokes
+          # the cmd_bin make, which then can't find those .c files.
+          # Symlink them in so the rebuild succeeds.
+          (
+            cd drivers/ddr/goke/default/cmd_bin
+            for f in ../ddr_training_impl.c ../ddr_training_ctl.c \
+                     ../ddr_training_console.c \
+                     ../../${{ matrix.soc }}/ddr_training_custom.c; do
+              ln -sf "$f" "$(basename "$f")"
+            done
+          )
+          # cmd_bin's CFLAGS reference a HiSi-internal path
+          # `$(TOPDIR)/../../../source/bootloader/u-boot/include` that
+          # doesn't exist in this fork — patch it to use $(TOPDIR)/include
+          # instead so command.h and friends resolve.
+          sed -i 's|/\.\./\.\./\.\./source/bootloader/u-boot/include|/include|' \
+            drivers/ddr/goke/default/cmd_bin/Makefile
+          make CROSS_COMPILE="$CROSS_COMPILE" ${{ matrix.soc }}_defconfig
+          cp reg_info_${{ matrix.soc }}.bin .reg
+          # disk/part_efi.c trips this gcc with `initializer element
+          # is not constant` because EFI_GUID() expands to a compound
+          # literal in static-initialiser context. The gk SoCs don't
+          # boot from GPT, so just disable EFI partition support to
+          # skip part_efi.c entirely. CONFIG_EFI_PARTITION is forced
+          # on by include/config_distro_defaults.h:30 — neuter that
+          # line so gk's defconfig doesn't pull it in.
+          sed -i '/^#define CONFIG_EFI_PARTITION$/d' \
+            include/config_distro_defaults.h
+          # The arm-hisiv300-linux toolchain defaults to gnu90; the
+          # source uses C99 idioms (for-loop init declarations). Pass
+          # -std=gnu99 through Kbuild's KCFLAGS hook.
+          make CROSS_COMPILE="$CROSS_COMPILE" -j$(nproc) KCFLAGS=-std=gnu99
+          cp u-boot.bin u-boot-${{ matrix.soc }}-universal.bin
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: u-boot-${{ matrix.soc }}-universal
+          path: u-boot-${{ matrix.soc }}-universal.bin
+
+  # No qemu_smoke job: widgetii/qemu-hisilicon's gk7202v300 / gk7205v200 /
+  # gk7205v300 / gk7605v100 machines emulate the Hi3516EV200/EV300/DV200
+  # family, all of which currently fail to boot u-boot from flash:
+  #   - gk7205v200 / gk7202v300 mirror EV200 — same HW-gzip decompressor
+  #     stub gap as widgetii/qemu-hisilicon#60.
+  #   - gk7205v300 / gk7605v100 produce no UART output at all in QEMU
+  #     (verified against the freshly-built artifacts).
+  # Re-add a smoke matrix once #60 is resolved and the additional
+  # gk-specific gaps have machine support.
+
+  publish:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Upload to OpenIPC/firmware latest release
+        env:
+          GH_TOKEN: ${{ secrets.FIRMWARE_RELEASE_TOKEN }}
+        run: |
+          set -eu
+          upload() {
+            local f="$1" i
+            for i in 1 2 3 4 5; do
+              if gh release upload latest "$f" --clobber -R OpenIPC/firmware; then
+                return 0
+              fi
+              [ "$i" = "5" ] && return 1
+              echo "upload attempt $i failed; sleeping $((i*10))s" >&2
+              sleep $((i*10))
+            done
+          }
+          for soc in gk7202v300 gk7205v200 gk7205v300 gk7605v100; do
+            f="artifacts/u-boot-${soc}-universal/u-boot-${soc}-universal.bin"
+            test -f "$f"
+            upload "$f"
+          done
