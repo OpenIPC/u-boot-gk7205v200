@@ -867,10 +867,27 @@ u-boot.bin: u-boot-nodtb.bin FORCE
 endif
 
 .PHONY: u-boot-z.bin
+# In-tree builds set $(srctree) but leave $(KBUILD_SRC) empty; fall
+# back so the cp doesn't end up at an absolute /arch/... path. The
+# arch/.../$(SOC)/Makefile builds u-boot-$(SOC).bin from a fixed
+# COBJS list that includes ddr_training_*.c — those .c files live in
+# drivers/ddr/goke/{default,$(SOC)}/, so stage them next to the SoC
+# sources before the sub-make. ENABLE_MINI_BOOT=y selects the
+# mini-boot LDS variant and drops emmc_boot.o/div0.o (which aren't
+# under arch/.../$(SOC)/) from COBJS — that's the boot path the
+# bootrom actually decompresses.
 u-boot-z.bin: $(CURDIR)/u-boot.bin
-	cp -raf $(KBUILD_SRC)/arch/$(ARCH)/cpu/$(CPU)/$(SOC) $(CURDIR)
-	make -C $(CURDIR)/$(SOC) CROSS_COMPILE=$(CROSS_COMPILE) \
-		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(KBUILD_SRC) OUTDIR=$(CURDIR)
+	$(eval _ZSRC := $(if $(KBUILD_SRC),$(KBUILD_SRC),$(CURDIR)))
+	cp -raf $(_ZSRC)/arch/$(ARCH)/cpu/$(CPU)/$(SOC) $(CURDIR)
+	cp $(_ZSRC)/drivers/ddr/goke/default/ddr_training_impl.c \
+	   $(_ZSRC)/drivers/ddr/goke/default/ddr_training_ctl.c \
+	   $(_ZSRC)/drivers/ddr/goke/default/ddr_training_boot.c \
+	   $(_ZSRC)/drivers/ddr/goke/default/ddr_training_console.c \
+	   $(_ZSRC)/drivers/ddr/goke/$(SOC)/ddr_training_custom.c \
+	   $(CURDIR)/$(SOC)/
+	$(MAKE) -C $(CURDIR)/$(SOC) CROSS_COMPILE=$(CROSS_COMPILE) \
+		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(_ZSRC) OUTDIR=$(CURDIR) \
+		ENABLE_MINI_BOOT=y
 
 %.imx: %.bin
 	$(Q)$(MAKE) $(build)=arch/arm/imx-common $@

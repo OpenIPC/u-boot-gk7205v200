@@ -75,20 +75,16 @@ jobs:
             drivers/ddr/goke/default/cmd_bin/Makefile
           make CROSS_COMPILE="$CROSS_COMPILE" ${{ matrix.soc }}_defconfig
           cp reg_info_${{ matrix.soc }}.bin .reg
-          # disk/part_efi.c trips this gcc with `initializer element
-          # is not constant` because EFI_GUID() expands to a compound
-          # literal in static-initialiser context. The gk SoCs don't
-          # boot from GPT, so just disable EFI partition support to
-          # skip part_efi.c entirely. CONFIG_EFI_PARTITION is forced
-          # on by include/config_distro_defaults.h:30 — neuter that
-          # line so gk's defconfig doesn't pull it in.
-          sed -i '/^#define CONFIG_EFI_PARTITION$/d' \
-            include/config_distro_defaults.h
           # The arm-hisiv300-linux toolchain defaults to gnu90; the
           # source uses C99 idioms (for-loop init declarations). Pass
           # -std=gnu99 through Kbuild's KCFLAGS hook.
           make CROSS_COMPILE="$CROSS_COMPILE" -j$(nproc) KCFLAGS=-std=gnu99
-          cp u-boot.bin u-boot-${{ matrix.soc }}-universal.bin
+          # u-boot-z.bin wraps u-boot.bin in the LZMA self-extractor
+          # the bootrom expects (~250 KiB versus ~500 KiB raw). The
+          # source-side recipe handles ddr_training source staging,
+          # ENABLE_MINI_BOOT=y, and KBUILD_SRC fallback internally.
+          make CROSS_COMPILE="$CROSS_COMPILE" KCFLAGS=-std=gnu99 u-boot-z.bin
+          cp u-boot-${{ matrix.soc }}.bin u-boot-${{ matrix.soc }}-universal.bin
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

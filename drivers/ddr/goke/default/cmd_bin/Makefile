@@ -22,7 +22,7 @@ DEPS        := $(COBJS:.o=.d) $(START:.o=.d)
 
 CFLAGS   := -Os -pipe  \
 	-DCMD_TEXT_BASE=$(CMD_TEXT_BASE) -DSTACK_POINT=$(STACK_POINT) \
-	-fno-builtin -ffreestanding -I./ -I$(TOPDIR)/../../../source/bootloader/u-boot/include -I../ \
+	-fno-builtin -ffreestanding -I./ -I$(TOPDIR)/include -I../ \
 	-DDDR_TRAINING_CMD -I$(TOPDIR)/drivers/ddr/goke/$(SOC)/
 
 CFLAGS += $(PLATFORM_RELFLAGS) $(PLATFORM_CPPFLAGS)
