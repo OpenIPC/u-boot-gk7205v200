@@ -88,7 +88,32 @@ jobs:
           # source uses C99 idioms (for-loop init declarations). Pass
           # -std=gnu99 through Kbuild's KCFLAGS hook.
           make CROSS_COMPILE="$CROSS_COMPILE" -j$(nproc) KCFLAGS=-std=gnu99
-          cp u-boot.bin u-boot-${{ matrix.soc }}-universal.bin
+          # Build the LZMA-wrapped u-boot-${soc}.bin that the bootrom
+          # expects (matches the historical OpenIPC/firmware layout —
+          # the published asset has always been the compressed
+          # variant). The SoC Makefile invokes gzip via a HiSi-internal
+          # path `$(OUTDIR)/../../../tools/utils/bin/gzip` that doesn't
+          # exist in this fork; sed-patch it to use system gzip before
+          # `make u-boot-z.bin` cps the SoC dir into the build tree.
+          sed -i 's|\$(OUTDIR)/\.\./\.\./\.\./tools/utils/bin/gzip|gzip|' \
+            arch/arm/cpu/armv7/${{ matrix.soc }}/Makefile
+          # The SoC Makefile expects ddr_training_*.c next to its own
+          # sources. Stage them in the SoC dir so the
+          # `cp -raf $(KBUILD_SRC)/arch/.../$(SOC) $(CURDIR)` step
+          # inside u-boot-z.bin carries them along.
+          cp drivers/ddr/goke/default/ddr_training_{impl,ctl,boot,console}.c \
+             arch/arm/cpu/armv7/${{ matrix.soc }}/
+          cp drivers/ddr/goke/${{ matrix.soc }}/ddr_training_custom.c \
+             arch/arm/cpu/armv7/${{ matrix.soc }}/
+          # KBUILD_SRC is empty for in-tree builds; the u-boot-z.bin
+          # recipe leaves an absolute /arch/.../<soc> path otherwise.
+          # ENABLE_MINI_BOOT=y selects the mini-boot LDS variant and
+          # drops emmc_boot/div0 (which live elsewhere) from COBJS,
+          # matching the legacy bootrom path that wraps u-boot.bin in
+          # the LZMA self-extractor.
+          make CROSS_COMPILE="$CROSS_COMPILE" KCFLAGS=-std=gnu99 \
+               KBUILD_SRC="$PWD" ENABLE_MINI_BOOT=y u-boot-z.bin
+          cp u-boot-${{ matrix.soc }}.bin u-boot-${{ matrix.soc }}-universal.bin
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
