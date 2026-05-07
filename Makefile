@@ -872,10 +872,7 @@ endif
 # arch/.../$(SOC)/Makefile builds u-boot-$(SOC).bin from a fixed
 # COBJS list that includes ddr_training_*.c — those .c files live in
 # drivers/ddr/goke/{default,$(SOC)}/, so stage them next to the SoC
-# sources before the sub-make. ENABLE_MINI_BOOT=y selects the
-# mini-boot LDS variant and drops emmc_boot.o/div0.o (which aren't
-# under arch/.../$(SOC)/) from COBJS — that's the boot path the
-# bootrom actually decompresses.
+# sources before the sub-make.
 u-boot-z.bin: $(CURDIR)/u-boot.bin
 	$(eval _ZSRC := $(if $(KBUILD_SRC),$(KBUILD_SRC),$(CURDIR)))
 	cp -raf $(_ZSRC)/arch/$(ARCH)/cpu/$(CPU)/$(SOC) $(CURDIR)
@@ -884,10 +881,10 @@ u-boot-z.bin: $(CURDIR)/u-boot.bin
 	   $(_ZSRC)/drivers/ddr/goke/default/ddr_training_boot.c \
 	   $(_ZSRC)/drivers/ddr/goke/default/ddr_training_console.c \
 	   $(_ZSRC)/drivers/ddr/goke/$(SOC)/ddr_training_custom.c \
+	   $(_ZSRC)/arch/arm/lib/div0.c \
 	   $(CURDIR)/$(SOC)/
 	$(MAKE) -C $(CURDIR)/$(SOC) CROSS_COMPILE=$(CROSS_COMPILE) \
-		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(_ZSRC) OUTDIR=$(CURDIR) \
-		ENABLE_MINI_BOOT=y
+		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(_ZSRC) OUTDIR=$(CURDIR)
 
 %.imx: %.bin
 	$(Q)$(MAKE) $(build)=arch/arm/imx-common $@

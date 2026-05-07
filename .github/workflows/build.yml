@@ -79,10 +79,11 @@ jobs:
           # source uses C99 idioms (for-loop init declarations). Pass
           # -std=gnu99 through Kbuild's KCFLAGS hook.
           make CROSS_COMPILE="$CROSS_COMPILE" -j$(nproc) KCFLAGS=-std=gnu99
-          # u-boot-z.bin wraps u-boot.bin in the LZMA self-extractor
+          # u-boot-z.bin wraps u-boot.bin in the gzip self-extractor
           # the bootrom expects (~250 KiB versus ~500 KiB raw). The
           # source-side recipe handles ddr_training source staging,
-          # ENABLE_MINI_BOOT=y, and KBUILD_SRC fallback internally.
+          # div0.c sourcing from arch/arm/lib/, and KBUILD_SRC fallback
+          # internally.
           make CROSS_COMPILE="$CROSS_COMPILE" KCFLAGS=-std=gnu99 u-boot-z.bin
           cp u-boot-${{ matrix.soc }}.bin u-boot-${{ matrix.soc }}-universal.bin
 
@@ -92,18 +93,89 @@ jobs:
           name: u-boot-${{ matrix.soc }}-universal
           path: u-boot-${{ matrix.soc }}-universal.bin
 
-  # No qemu_smoke job: widgetii/qemu-hisilicon's gk7202v300 / gk7205v200 /
-  # gk7205v300 / gk7605v100 machines emulate the Hi3516EV200/EV300/DV200
-  # family, all of which currently fail to boot u-boot from flash:
-  #   - gk7205v200 / gk7202v300 mirror EV200 — same HW-gzip decompressor
-  #     stub gap as widgetii/qemu-hisilicon#60.
-  #   - gk7205v300 / gk7605v100 produce no UART output at all in QEMU
-  #     (verified against the freshly-built artifacts).
-  # Re-add a smoke matrix once #60 is resolved and the additional
-  # gk-specific gaps have machine support.
+  qemu_smoke:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # widgetii/qemu-hisilicon#60 (HW gzip decompressor for ev200-
+        # family machines) was fixed, which unblocked smoke-testing
+        # gk7205v200 / gk7202v300 — both mirror the EV200 V4 SoC.
+        # gk7205v300 / gk7605v100 machines still emit no UART output
+        # at boot in QEMU and are skipped here; they publish unguarded
+        # until that gap closes.
+        include:
+          - { soc: gk7205v200, machine: gk7205v200 }
+          - { soc: gk7202v300, machine: gk7202v300 }
+    steps:
+      - name: Install QEMU build deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends \
+            build-essential ninja-build meson pkg-config \
+            libglib2.0-dev libpixman-1-dev libfdt-dev zlib1g-dev \
+            libslirp-dev python3 python3-venv
+
+      - name: Resolve qemu-hisilicon HEAD
+        id: qemu-rev
+        run: |
+          sha=$(git ls-remote https://github.com/widgetii/qemu-hisilicon master | cut -f1)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Cache qemu-system-arm
+        id: cache-qemu
+        uses: actions/cache@v4
+        with:
+          path: qemu-arm
+          key: qemu-hisilicon-${{ steps.qemu-rev.outputs.sha }}
+
+      - name: Build qemu-system-arm (cache miss)
+        if: steps.cache-qemu.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth 1 --branch master \
+            https://github.com/widgetii/qemu-hisilicon qemu-hisilicon
+          cd qemu-hisilicon
+          bash qemu/setup.sh
+          cp qemu-src/build/qemu-system-arm "$GITHUB_WORKSPACE/qemu-arm"
+          chmod +x "$GITHUB_WORKSPACE/qemu-arm"
+
+      - name: Download u-boot artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: u-boot-${{ matrix.soc }}-universal
+
+      - name: Smoke-test in QEMU
+        timeout-minutes: 2
+        run: |
+          UBOOT="$PWD/u-boot-${{ matrix.soc }}-universal.bin"
+          test -f "$UBOOT"
+          dd if=/dev/zero of=/tmp/flash.bin bs=1M count=8 2>/dev/null
+          dd if="$UBOOT" of=/tmp/flash.bin bs=1 conv=notrunc 2>/dev/null
+          mkfifo /tmp/uart.in /tmp/uart.out
+          chmod +x ./qemu-arm
+          ./qemu-arm \
+            -M ${{ matrix.machine }} \
+            -global hisi-fmc.flash-file=/tmp/flash.bin \
+            -nographic -serial pipe:/tmp/uart \
+            -monitor none > /tmp/qemu.log 2>&1 &
+          QEMU_PID=$!
+          timeout 10 cat /tmp/uart.out > /tmp/uboot.txt || true
+          kill "$QEMU_PID" 2>/dev/null || true
+          wait 2>/dev/null || true
+          echo "== captured u-boot output =="
+          cat /tmp/uboot.txt
+          echo
+          if grep -qE 'U-Boot |Hit any key|CPU:|DRAM:|Board:' /tmp/uboot.txt; then
+            echo "PASS: u-boot booted past System startup"
+          else
+            echo "FAIL: u-boot did not get past System startup"
+            tail -40 /tmp/qemu.log || true
+            exit 1
+          fi
 
   publish:
-    needs: build
+    needs: [build, qemu_smoke]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
