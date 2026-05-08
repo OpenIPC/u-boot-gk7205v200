@@ -86,7 +86,7 @@ regfile:
 
 # -1 : --fast      -9 : --best
 image_data.gzip: $(BINIMAGE)
-	./gzip -fNqc -7 $< > $@
+	gzip -fNqc -7 $< > $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -Wall -Wstrict-prototypes \
