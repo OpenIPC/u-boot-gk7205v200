@@ -868,9 +868,8 @@ endif
 
 .PHONY: u-boot-z.bin
 u-boot-z.bin: $(CURDIR)/u-boot.bin
-	cp -raf $(KBUILD_SRC)/arch/$(ARCH)/cpu/$(CPU)/$(SOC) $(CURDIR)
-	make -C $(CURDIR)/$(SOC) CROSS_COMPILE=$(CROSS_COMPILE) \
-		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(KBUILD_SRC) OUTDIR=$(CURDIR)
+	make -C $(CURDIR)/arch/$(ARCH)/cpu/$(CPU)/$(SOC) CROSS_COMPILE=$(CROSS_COMPILE) \
+		BINIMAGE=$(CURDIR)/u-boot.bin SRCDIR=$(CURDIR) OUTDIR=$(CURDIR)
 
 %.imx: %.bin
 	$(Q)$(MAKE) $(build)=arch/arm/imx-common $@
@@ -1488,7 +1487,7 @@ clean: $(clean-dirs)
 		-o -name '*.symtypes' -o -name 'modules.order' \
 		-o -name modules.builtin -o -name '.tmp_*.o.*' \
 		-o -name 'dsdt.aml' -o -name 'dsdt.asl.tmp' -o -name 'dsdt.c' \
-		-o -name '*.gcno' \) -type f -print | xargs rm -f
+		-o -name '*.gcno' \) -type f,l -print | xargs rm -f
 
 # mrproper - Delete all generated files, including .config
 #
