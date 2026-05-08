@@ -166,8 +166,7 @@ jobs:
           mkfifo /tmp/uart.in /tmp/uart.out
           chmod +x ./qemu-arm
           ./qemu-arm \
-            -M ${{ matrix.machine }} \
-            -global hisi-fmc.flash-file=/tmp/flash.bin \
+            -M ${{ matrix.machine }},flash-file=/tmp/flash.bin \
             -nographic -serial pipe:/tmp/uart \
             -monitor none > /tmp/qemu.log 2>&1 &
           QEMU_PID=$!
