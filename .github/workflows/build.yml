@@ -114,15 +114,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # widgetii/qemu-hisilicon#60 (HW gzip decompressor for ev200-
-        # family machines) was fixed, which unblocked smoke-testing
-        # gk7205v200 / gk7202v300 — both mirror the EV200 V4 SoC.
-        # gk7205v300 / gk7605v100 machines still emit no UART output
-        # at boot in QEMU and are skipped here; they publish unguarded
-        # until that gap closes.
         include:
           - { soc: gk7205v200, machine: gk7205v200 }
           - { soc: gk7202v300, machine: gk7202v300 }
+          - { soc: gk7205v300, machine: gk7205v300 }
+          - { soc: gk7605v100, machine: gk7605v100 }
     steps:
       - name: Install QEMU build deps
         run: |
