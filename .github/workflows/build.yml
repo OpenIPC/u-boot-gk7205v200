@@ -87,6 +87,21 @@ jobs:
           make CROSS_COMPILE="$CROSS_COMPILE" KCFLAGS=-std=gnu99 u-boot-z.bin
           cp u-boot-${{ matrix.soc }}.bin u-boot-${{ matrix.soc }}-universal.bin
 
+      - name: Check partition fit
+        run: |
+          # The boot partition in mtdparts (gk-common.h) is 256 KiB
+          # across every NOR/NAND/UBI variant. Anything past that
+          # overflows into env at offset 0x40000 and bricks the device
+          # on upgrade. Mirrors OpenIPC/firmware Makefile CHECK_SIZE.
+          FILE=u-boot-${{ matrix.soc }}-universal.bin
+          LIMIT_KB=256
+          SIZE_KB=$(($(stat -c %s "$FILE") / 1024))
+          echo "- $FILE: [${SIZE_KB}KB/${LIMIT_KB}KB]"
+          if [ "$SIZE_KB" -gt "$LIMIT_KB" ]; then
+            echo "-- size exceeded by: $((SIZE_KB - LIMIT_KB))KB"
+            exit 1
+          fi
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
