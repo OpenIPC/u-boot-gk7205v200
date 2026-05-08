@@ -114,15 +114,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # widgetii/qemu-hisilicon#60 (HW gzip decompressor for ev200-
-        # family machines) was fixed, which unblocked smoke-testing
-        # gk7205v200 / gk7202v300 — both mirror the EV200 V4 SoC.
-        # gk7205v300 / gk7605v100 machines still emit no UART output
-        # at boot in QEMU and are skipped here; they publish unguarded
-        # until that gap closes.
+        # All four Goke V4 SoCs in this repo are now testable. The
+        # gk7205v300 / gk7605v100 silent-UART symptom was fixed by
+        # qemu-hisilicon#79 — the boot-ROM stub's hardcoded 256 KiB
+        # copy_sz wasn't large enough for the ~515 KiB Goke V4 u-boot
+        # binaries, so execution jumped into a relocated section that
+        # was never copied. Bumping copy_sz to 1 MiB closed the gap
+        # for v300/v605 (and was a no-op net positive for v200/v202).
         include:
           - { soc: gk7205v200, machine: gk7205v200 }
           - { soc: gk7202v300, machine: gk7202v300 }
+          - { soc: gk7205v300, machine: gk7205v300 }
+          - { soc: gk7605v100, machine: gk7605v100 }
     steps:
       - name: Install QEMU build deps
         run: |
