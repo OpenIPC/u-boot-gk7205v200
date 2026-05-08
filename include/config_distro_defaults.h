@@ -27,7 +27,15 @@
 #define CONFIG_SYS_LONGHELP
 #define CONFIG_MENU
 #define CONFIG_DOS_PARTITION
-#define CONFIG_EFI_PARTITION
+/*
+ * CONFIG_EFI_PARTITION omitted: pulls in disk/part_efi.c whose
+ * `static efi_guid_t system_guid = PARTITION_SYSTEM_GUID;` triggers
+ * an "initializer element is not constant" error on this toolchain
+ * (gcc treats the EFI_GUID() compound literal as non-constant for
+ * static init). The gk SoCs boot from raw NOR/NAND, not GPT, so the
+ * default doesn't need it. Boards that actually need it can set
+ * CONFIG_EFI_PARTITION in their own header.
+ */
 #define CONFIG_ISO_PARTITION
 #define CONFIG_SUPPORT_RAW_INITRD
 #define CONFIG_ENV_VARS_UBOOT_CONFIG
