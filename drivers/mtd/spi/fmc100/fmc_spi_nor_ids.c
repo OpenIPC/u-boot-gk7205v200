@@ -260,7 +260,7 @@ static struct spi_drv spi_driver_issi = {
 	.qe_enable = spi_issi_qe_enable,
 };
 /*****************************************************************************/
-#define SPI_NOR_ID_TBL_VER     "1.0"
+#define SPI_NOR_ID_TBL_VER     "1.1"
 
 /* ****** SPI Nor ID Table ****************************************************
  * 	Manufacturer     Chip Name           Chipsize    Block   Vol  Operation
@@ -321,6 +321,7 @@ static struct spi_drv spi_driver_issi = {
  *      HUAHONG		H25S64			8M	64K	3V3
  *      HUAHONG		H25S128			16M	64K	3V3
  *	ISSI		IS25WP512M-RMLA3	64M	64k	1V8
+ * 1.1  Puya		PY25Q128HA		16M	64K	3V3
  *****************************************************************************/
 static struct spi_nor_info fmc_spi_nor_info_table[] = {
 	/* name     id  id_len  chipsize(Bytes) erasesize  */
@@ -1819,6 +1820,28 @@ static struct spi_nor_info fmc_spi_nor_info_table[] = {
 	/* Puya Semiconductor 3.3V */
 	{
 		"P25Q128H", {0x85, 0x60, 0x18}, 3, _16M,  _64K, 3,
+		{
+			&read_std(0, INFINITE, 80),
+			&read_fast(1, INFINITE, 104),
+			&read_dual(1, INFINITE, 104),
+			&read_dual_addr(1, INFINITE, 104),
+			//&read_quad(1, INFINITE, 104),
+			//&read_quad_addr(3, INFINITE, 104),
+			0
+		},
+		{
+			&write_std(0, 256, 104),
+			//&write_quad(0, 256, 104),
+			0
+		},
+		{
+			&erase_sector_64k(0, _64K, 104),
+			0
+		},
+		&spi_driver_puya,
+	},
+	{
+		"PY25Q128HA", {0x85, 0x20, 0x18}, 3, _16M,  _64K, 3,
 		{
 			&read_std(0, INFINITE, 80),
 			&read_fast(1, INFINITE, 104),
