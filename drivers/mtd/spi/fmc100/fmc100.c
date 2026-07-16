@@ -881,6 +881,7 @@ void fmc100_get_bp_lock_level(struct fmc_host *host)
 	case MID_CFEON:
 	case MID_SPANSION:
 	case MID_FM:
+	case MID_PUYA:
 		host->bp_num = BP_NUM_3;
 		host->level = fmc100_bp_to_level(host);
 		break;
@@ -965,6 +966,7 @@ unsigned short fmc100_set_spi_lock_info(struct fmc_host *host)
 	case MID_CFEON:
 	case MID_WINBOND:
 	case MID_FM:
+	case MID_PUYA:
 	case MID_XTX:
 	case MID_SK:
 		val = fmc100_handle_bp_rdsr_info(host, SPI_CMD_RDSR);
