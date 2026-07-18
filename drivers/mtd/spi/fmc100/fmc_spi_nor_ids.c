@@ -2428,6 +2428,9 @@ int fmc_spi_nor_probe(struct mtd_info_ex *mtd, struct fmc_spi *spi)
 #endif
 			fmc_spi_map_op(spiinfo, spi);
 
+			if (ids[0] == MID_PUYA)
+				spi_puya_global_unlock(spi);
+
 			spi->driver->qe_enable(spi);
 
 			switch_to_4byte(spi, ids, MAX_SPI_NOR_ID_LEN);
