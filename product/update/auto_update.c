@@ -12,6 +12,9 @@
 #include <spi_flash.h>
 #include <linux/mtd/mtd.h>
 #include <fat.h>
+#ifdef DEBUG
+#include <linux/time.h>
+#endif
 
 #if (CONFIG_AUTO_UPDATE == 1)  /* cover the whole file */
 
@@ -24,8 +27,8 @@
 #endif
 
 #if defined CONFIG_AUTO_USB_UPDATE
-#if !defined CONFIG_USB_OHCI && !defined CONFIG_USB_XHCI
-#error "should have defined CONFIG_USB_OHCI or CONFIG_USB_XHCI"
+#if !defined CONFIG_USB_OHCI && !defined CONFIG_USB_XHCI_HCD
+#error "should have defined CONFIG_USB_OHCI or CONFIG_USB_XHCI_HCD"
 #endif
 #ifndef CONFIG_USB_STORAGE
 #error "should have defined CONFIG_USB_STORAGE"
@@ -43,9 +46,9 @@
 #endif  /* AU_DEBUG */
 
 /* possible names of files on the medium. */
-#define AU_FIRMWARE "u-boot"
-#define AU_KERNEL   "kernel"
-#define AU_ROOTFS   "rootfs"
+#define AU_FIRMWARE	"autoupdate-uboot.img"
+#define AU_KERNEL	"autoupdate-kernel.img"
+#define AU_ROOTFS	"autoupdate-rootfs.img"
 
 #define NAME_LEN	20
 #define ENV_LEN		20
@@ -78,13 +81,20 @@ static struct medium_interface s_intf[MAX_UPDATE_INTF] = {
 #endif
 };
 
+/* OpenIPC flash layout
+0x000000000000-0x000000040000 : "boot"
+0x000000040000-0x000000050000 : "env"
+0x000000050000-0x000000250000 : "kernel"
+0x000000250000-0x000000750000 : "rootfs"
+0x000000750000-0x000001000000 : "rootfs_data" */
+
 /* layout of the FLASH. ST = start address, ND = end address. */
-#define AU_FL_FIRMWARE_ST   0x0
-#define AU_FL_FIRMWARE_ND   0x7FFFF
-#define AU_FL_KERNEL_ST     0x100000
-#define AU_FL_KERNEL_ND     0x5FFFFF
-#define AU_FL_ROOTFS_ST     0x600000
-#define AU_FL_ROOTFS_ND     0xbFFFFF
+#define AU_FL_FIRMWARE_ST	0x00000000
+#define AU_FL_FIRMWARE_ND	0x0004FFFF
+#define AU_FL_KERNEL_ST		0x00050000
+#define AU_FL_KERNEL_ND		0x0024FFFF
+#define AU_FL_ROOTFS_ST		0x00250000
+#define AU_FL_ROOTFS_ND		0x0074FFFF
 
 static int au_stor_curr_dev; /* current device */
 
@@ -117,7 +127,7 @@ struct flash_layout aufl_layout[AU_MAXFILES] = {
 	{ AU_FL_ROOTFS_ST,  AU_FL_ROOTFS_ND,   },
 };
 
-#define LOAD_ADDR ((unsigned char *)0x82000000)
+#define LOAD_ADDR ((unsigned char *)0x42000000)
 
 /* the app is the largest image */
 #define MAX_LOADSZ ausize[IDX_ROOTFS]
@@ -149,19 +159,28 @@ static int au_check_header_valid(int idx, long nbytes)
 	image_header_t *hdr;
 	unsigned long checksum;
 
-	char env[ENV_LEN];
+	char *env;
 	char auversion[ENV_LEN];
 
 	hdr = (image_header_t *)LOAD_ADDR;
 	/* check the easy ones first */
 
-#undef CHECK_VALID_DEBUG
-#ifdef CHECK_VALID_DEBUG
+#ifdef DEBUG
+	time_t ih_time;
+	char buf[50];
+  
+	ih_time = (unsigned long)ntohl(hdr->ih_time);
+
 	printf("\nmagic %#x %#x\n", ntohl(hdr->ih_magic), IH_MAGIC);
 	printf("arch %#x %#x\n", hdr->ih_arch, IH_ARCH_ARM);
 	printf("size %#x %#lx\n", ntohl(hdr->ih_size), nbytes);
 	printf("type %#x %#x\n", hdr->ih_type, IH_TYPE_KERNEL);
+	printf("\nImage Name:   %s\n", hdr->ih_name);
+	printf("Created:      %s\n",  ctime_r(&ih_time, buf));
+	printf("Load Address: %#x\n", ntohl(hdr->ih_load));
+	printf("Entry Point:  %#x\n", ntohl(hdr->ih_ep));
 #endif
+
 	if (nbytes < sizeof(*hdr)) {
 		printf("Image %s bad header SIZE\n", aufile[idx]);
 		return -1;
@@ -209,8 +228,11 @@ static int au_check_header_valid(int idx, long nbytes)
 		return -1;
 	}
 
-	sprintf(env, "%lx", (unsigned long)ntohl(hdr->ih_time));
-	setenv(auversion, env);
+	// sprintf(env, "%lx", (unsigned long)ntohl(hdr->ih_time));
+	env = strdup(aufile[idx]+11);
+	strtok(env, ".");
+
+	setenv(env, hdr->ih_name);
 
 	return 0;
 }
@@ -271,7 +293,7 @@ static int spi_flash_erase_op(struct spi_flash *flash, unsigned long offset,
 static int spi_flash_write_op(struct spi_flash *flash, unsigned long offset,
 						unsigned long len, char *buf)
 {
-	int ret;
+	int ret = 0;
 	unsigned long write_start, write_len, write_step;
 	char *pbuf = buf;
 	struct mtd_info_ex *spiflash_info = get_spiflash_info();
@@ -329,7 +351,7 @@ static int au_do_update(int idx, long sz)
 	}
 
 	/* strip the header - except for the kernel and ramdisk */
-	if (hdr->ih_type == IH_TYPE_KERNEL || hdr->ih_type == IH_TYPE_RAMDISK) {
+	if (hdr->ih_type == IH_TYPE_RAMDISK) {
 		pbuf = buf;
 		write_len = sizeof(*hdr) + ntohl(hdr->ih_size);
 	} else {
@@ -393,8 +415,8 @@ static int update_to_flash(void)
 	int i;
 	long sz;
 	int res, cnt;
-	int uboot_updated;
-	int image_found;
+	int uboot_updated = 0;
+	int image_found = 0;
 
 	/* just loop thru all the possible files */
 	for (i = 0; i < AU_MAXFILES; i++) {

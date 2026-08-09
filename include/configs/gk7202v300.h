@@ -197,7 +197,7 @@
 #define CONFIG_AUTO_UPDATE          1
 
 #if (CONFIG_AUTO_UPDATE == 1)
-#define CONFIG_AUTO_UPDATE_ADAPTATION   1
+/* #define CONFIG_AUTO_UPDATE_ADAPTATION   1 */
 /* base on needs #define CONFIG_AUTO_SD_UPDATE     1 */
 /* base on needs #define CONFIG_AUTO_USB_UPDATE    1 */
 
