@@ -243,5 +243,13 @@
 #define CONFIG_CMD_UGZIP
 
 /* base on needs #define CONFIG_AUDIO_ENABLE */
+/* Boot-count escalation: after the firmware sets upgrade_available=1 before a
+ * risky flash, count boots and -- if the new firmware never reaches a healthy
+ * userspace to clear the counter -- fall back to altbootcmd (recovery) instead
+ * of looping on a broken image. bootcount_env only counts while
+ * upgrade_available is set, so this is inert on a normally-running camera. */
+#define CONFIG_BOOTCOUNT_LIMIT
+#define CONFIG_BOOTCOUNT_ENV
+
 #include <configs/gk-common.h>
 #endif /* __GK7205V200_H */
