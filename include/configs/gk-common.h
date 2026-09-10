@@ -7,7 +7,11 @@
     "uknor16m=mw.b ${baseaddr} ff 1000000; tftpboot ${baseaddr} uImage.${soc} && sf probe 0; sf erase 0x50000 0x300000; sf write ${baseaddr} 0x50000 ${filesize}\0" \
     "urnor8m=mw.b ${baseaddr} ff 1000000; tftpboot ${baseaddr} rootfs.squashfs.${soc} && sf probe 0; sf erase 0x250000 0x500000; sf write ${baseaddr} 0x250000 ${filesize}\0" \
     "urnor16m=mw.b ${baseaddr} ff 1000000; tftpboot ${baseaddr} rootfs.squashfs.${soc} && sf probe 0; sf erase 0x350000 0xa00000; sf write ${baseaddr} 0x350000 ${filesize}\0" \
-    "fwrecovery=if env exists bootfail; then echo \"*** RECOVERY: kernel/rootfs invalid, reflashing over TFTP -- do not power off ***\"; dhcp; run uknor8m && run urnor8m; sleep 3; reset; fi\0" \
+    "fwrecovery=if env exists bootfail; then echo \"*** RECOVERY: kernel/rootfs invalid, reflashing -- do not power off ***\"; if run ukmmc && run urmmc; then reset; fi; if run ukusb && run urusb; then reset; fi; dhcp && run uknor8m && run urnor8m; sleep 3; reset; fi\0" \
+    "ukmmc=fatload mmc 0:1 ${baseaddr} uImage.${soc} && sf probe 0 && sf erase 0x50000 0x200000 && sf write ${baseaddr} 0x50000 ${filesize}\0" \
+    "urmmc=fatload mmc 0:1 ${baseaddr} rootfs.squashfs.${soc} && sf probe 0 && sf erase 0x250000 0x500000 && sf write ${baseaddr} 0x250000 ${filesize}\0" \
+    "ukusb=usb start && fatload usb 0:1 ${baseaddr} uImage.${soc} && sf probe 0 && sf erase 0x50000 0x200000 && sf write ${baseaddr} 0x50000 ${filesize}\0" \
+    "urusb=usb start && fatload usb 0:1 ${baseaddr} rootfs.squashfs.${soc} && sf probe 0 && sf erase 0x250000 0x500000 && sf write ${baseaddr} 0x250000 ${filesize}\0" \
     "uknand=mw.b ${baseaddr} ff 1000000; tftpboot ${baseaddr} uImage.${soc} && nand erase 0x100000 0x300000; nand write ${baseaddr} 0x100000 0x300000\0" \
     "urnand=mw.b ${baseaddr} ff 1000000; tftpboot ${baseaddr} rootfs.ubi.${soc} && nand erase 0x400000 0x7c00000; nand write ${baseaddr} 0x400000 ${filesize}\0" \
     "mtdparts=sfc:256k(boot),64k(env),2048k(kernel),5120k(rootfs),-(rootfs_data)\0" \
