@@ -3,6 +3,7 @@
  */
 #include <config.h>
 #include <common.h>
+#include <openipc.h>
 #include <asm/io.h>
 #include <spi_flash.h>
 #include <linux/mtd/mtd.h>
@@ -287,6 +288,9 @@ int misc_init_r(void)
 	 * getenv_yesno() treats an unset var as true, "setenv verify n" still
 	 * works as an escape hatch, and bootcmd ends in "; reset" so a rejected
 	 * image retries instead of booting garbage. */
+
+	/* Flag a missing/corrupt kernel or rootfs so bootcmd can recover. */
+	firmware_scan();
 
 #if (CONFIG_AUTO_UPDATE == 1)
 	/* auto update flag */
