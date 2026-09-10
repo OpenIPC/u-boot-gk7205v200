@@ -29,6 +29,8 @@
     "setnand=run mtdpartsubi; setenv bootcmd ${bootcmdubi}; saveenv; reset\0" \
     "setnor8m=run mtdpartsnor8m; setenv bootcmd ${bootcmdnor}; saveenv; reset\0" \
     "setnor16m=run mtdpartsnor16m; setenv bootcmd ${bootcmdnor}; saveenv; reset\0" \
+    "bootlimit=3\0" \
+    "altbootcmd=echo \"*** Boot limit exceeded -- forcing firmware recovery ***\"; setenv bootfail 1; run fwrecovery\0" \
     "osmem=32M\0" \
     "soc="CONFIG_PRODUCTNAME
 
