@@ -3,6 +3,7 @@
  */
 #include <config.h>
 #include <common.h>
+#include <openipc.h>
 #include <asm/io.h>
 #include <spi_flash.h>
 #include <linux/mtd/mtd.h>
@@ -278,7 +279,18 @@ int misc_init_r(void)
 #ifdef CONFIG_RANDOM_ETHADDR
 	random_init_r();
 #endif
-	setenv("verify", "n");
+	/* Do NOT force verify=n here. misc_init_r runs after the environment is
+	 * loaded, so setenv() overrides the saved value on every boot; with
+	 * verify off, bootm never CRC-checks the kernel and a corrupt image
+	 * (a bad flash, an interrupted upgrade, a single-bit NOR read error) is
+	 * executed and hangs silently -- a camera that only a UART reflash can
+	 * recover. Leaving it unset restores the upstream default (verify on):
+	 * getenv_yesno() treats an unset var as true, "setenv verify n" still
+	 * works as an escape hatch, and bootcmd ends in "; reset" so a rejected
+	 * image retries instead of booting garbage. */
+
+	/* Flag a missing/corrupt kernel or rootfs so bootcmd can recover. */
+	firmware_scan();
 
 #if (CONFIG_AUTO_UPDATE == 1)
 	/* auto update flag */
