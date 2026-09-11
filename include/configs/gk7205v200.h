@@ -243,13 +243,23 @@
 #define CONFIG_CMD_UGZIP
 
 /* base on needs #define CONFIG_AUDIO_ENABLE */
-/* Boot-count escalation: after the firmware sets upgrade_available=1 before a
- * risky flash, count boots and -- if the new firmware never reaches a healthy
- * userspace to clear the counter -- fall back to altbootcmd (recovery) instead
- * of looping on a broken image. bootcount_env only counts while
- * upgrade_available is set, so this is inert on a normally-running camera. */
+/* Boot-count escalation. Each boot increments a counter; if the running
+ * firmware never reaches a healthy userspace to clear it, bootcount exceeds
+ * bootlimit and U-Boot runs altbootcmd (failsafe -- see gk-common.h).
+ *
+ * The counter is a single DRAM word, NOT the env: writing the NOR env every
+ * boot is both wear and a corruption risk (a power cut mid-write can brick the
+ * env). The generic weak bootcount in drivers/bootcount/bootcount.c stores
+ * (BOOTCOUNT_MAGIC | count) at CONFIG_SYS_BOOTCOUNT_ADDR. That address is a
+ * no-map reserved region carved out of RAM by the board DTS, which -- measured
+ * on hardware -- survives a warm reset (so a crashloop is counted) and is lost
+ * on power-off (so pulling power gives a fresh set of attempts), and which
+ * userspace can clear via /dev/mem under CONFIG_STRICT_DEVMEM. Do NOT select
+ * CONFIG_BOOTCOUNT_ENV: leaving every backend unselected uses that weak
+ * default, so nothing here ever writes flash. */
 #define CONFIG_BOOTCOUNT_LIMIT
-#define CONFIG_BOOTCOUNT_ENV
+#define CONFIG_SYS_BOOTCOUNT_ADDR	0x41f20000
+#define CONFIG_SYS_BOOTCOUNT_SINGLEWORD
 
 #include <configs/gk-common.h>
 #endif /* __GK7205V200_H */
