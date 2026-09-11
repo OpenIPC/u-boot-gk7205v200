@@ -30,7 +30,7 @@
     "setnor8m=run mtdpartsnor8m; setenv bootcmd ${bootcmdnor}; saveenv; reset\0" \
     "setnor16m=run mtdpartsnor16m; setenv bootcmd ${bootcmdnor}; saveenv; reset\0" \
     "bootlimit=2\0" \
-    "altbootcmd=echo \"*** Boot limit exceeded -- entering FAILSAFE (network + SSH only) ***\"; setenv setargs setenv bootargs ${bootargs} failsafe; run setargs; sf probe 0; sf read ${baseaddr} 0x50000 0x300000; bootm ${baseaddr}; reset\0" \
+    "altbootcmd=echo \"*** Boot limit exceeded -- entering FAILSAFE (network + SSH only) ***\"; setenv bootargs ${bootargs} failsafe; run bootcmd\0" \
     "osmem=32M\0" \
     "soc="CONFIG_PRODUCTNAME
 
