@@ -233,5 +233,26 @@
 
 /* base on needs #define CONFIG_AUDIO_ENABLE */
 #define CONFIG_AUDIO_ENABLE
+
+/* Boot-count escalation. Each boot increments a counter; if the running
+ * firmware never reaches a healthy userspace to clear it, bootcount exceeds
+ * bootlimit and U-Boot runs altbootcmd (failsafe -- see gk-common.h).
+ *
+ * The counter is a single DRAM word, NOT the env: writing the NOR env every
+ * boot is both wear and a corruption risk (a power cut mid-write can brick the
+ * env). The generic weak bootcount in drivers/bootcount/bootcount.c stores
+ * (BOOTCOUNT_MAGIC | count) at CONFIG_SYS_BOOTCOUNT_ADDR. That address is a
+ * no-map reserved region carved out of RAM by the board DTS, which -- measured
+ * on hardware -- survives a warm reset (so a crashloop is counted) and is lost
+ * on power-off (so pulling power gives a fresh set of attempts), and which
+ * userspace can clear via /dev/mem under CONFIG_STRICT_DEVMEM. 0x41f20000 sits
+ * in the low 32M OS window, just below the media zone at 0x42000000, on every
+ * DRAM size this SoC ships (128M here). Do NOT select CONFIG_BOOTCOUNT_ENV:
+ * leaving every backend unselected uses that weak default, so nothing here ever
+ * writes flash. */
+#define CONFIG_BOOTCOUNT_LIMIT
+#define CONFIG_SYS_BOOTCOUNT_ADDR	0x41f20000
+#define CONFIG_SYS_BOOTCOUNT_SINGLEWORD
+
 #include <configs/gk-common.h>
 #endif /* __GK7205V300_H */
