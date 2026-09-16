@@ -2,6 +2,16 @@
  * Copyright (c) Hunan Goke,Chengdu Goke,Shandong Goke. 2021. All rights reserved.
  */
 
+/*
+ * PY25Q128HA_Datasheet V2.2, "Status Register" and "Configure Register":
+ *   SR1  b7 SRP0  b6..b2 BP4..BP0   b1 WEL(v)  b0 WIP(ro)
+ *   SR2  b7 SUS(ro)  b6 CMP  b5..b3 LB3..LB1(otp)  b2 EP_FAIL(ro)
+ *        b1 QE  b0 SRP1
+ *   SR3  b7 HOLD/RST  b6 DRV1  b5 DRV0  b2 WPS  b1 DC(v)  b0 DLP(v)
+ * Only the bits that protect the array are touched below.
+ */
+#define SPI_NOR_SR1_PROT_MASK	0xfc	/* SRP0 | BP4..BP0 */
+#define SPI_NOR_SR2_PROT_MASK	0x41	/* CMP | SRP1 */
 #define SPI_NOR_SR3_WPS_SHIFT	2
 #define SPI_NOR_SR3_WPS_MASK	(1 << SPI_NOR_SR3_WPS_SHIFT)
 
@@ -62,42 +72,66 @@ static void spi_puya_write_status_reg(struct fmc_spi *spi, unsigned char cmd,
 
 /*****************************************************************************/
 /*
- * PY25Q128HA defaults to WPS=1: all blocks are individually locked.
- * Send Global Block Unlock (98h) and clear protection bits in SR1/SR2/SR3.
- * Must run before qe_enable(), because SR2 is cleared here.
+ * A Puya part shipped with SR3.WPS=1 is protected by the individual per-block
+ * lock bits, which power up locked (datasheet Table 6-3 note 2) - sf lock only
+ * drives the BP level, so every erase and write is silently discarded. Issue
+ * Global Block Unlock (98h) while WPS is still 1, since that is the only mode
+ * in which the per-block bits exist, then clear WPS and the BP/CMP protection.
+ *
+ * Mask exactly the bits that protect the array. Writing SR2 back as a flat zero
+ * also cleared QE, which spi_puya_qe_enable() then set again on the way out of
+ * probe - two non-volatile status-register writes on every single boot, for a
+ * bit the unlock never needed to touch.
  */
 static void spi_puya_global_unlock(struct fmc_spi *spi)
 {
-	unsigned char val;
+	unsigned char sr1, sr2, sr3;
 
-#ifndef CONFIG_MINI_BOOT
-	printf("Puya SPI nor: global block unlock\n");
-#endif
 	fmc_pr(BP_DBG, "\t* Puya force global unlock\n");
 
-	spi->driver->write_enable(spi);
-	spi_puya_send_cmd(spi, SPI_CMD_GBULK);
-	spi->driver->wait_ready(spi);
+	sr3 = spi_general_get_flash_register(spi, SPI_CMD_RDSR3);
+	if (sr3 & SPI_NOR_SR3_WPS_MASK) {
+#ifndef CONFIG_MINI_BOOT
+		printf("Puya SPI nor: WPS set, unlocking all blocks\n");
+#endif
+		spi->driver->write_enable(spi);
+		spi_puya_send_cmd(spi, SPI_CMD_GBULK);
+		spi->driver->wait_ready(spi);
 
-	val = spi_general_get_flash_register(spi, SPI_CMD_RDSR);
-	if (val) {
-		fmc_pr(BP_DBG, "\t  SR1 [%#x] -> [00]\n", val);
-		spi_puya_write_status_reg(spi, SPI_CMD_WRSR, 0);
-	}
-
-	val = spi_general_get_flash_register(spi, SPI_CMD_RDSR2);
-	if (val) {
-		fmc_pr(BP_DBG, "\t  SR2 [%#x] -> [00]\n", val);
-		spi_puya_write_status_reg(spi, SPI_CMD_WRSR2, 0);
-	}
-
-	val = spi_general_get_flash_register(spi, SPI_CMD_RDSR3);
-	if (val & SPI_NOR_SR3_WPS_MASK) {
-		fmc_pr(BP_DBG, "\t  SR3 [%#x] -> [%#x] (clear WPS)\n", val,
-		       val & ~SPI_NOR_SR3_WPS_MASK);
+		fmc_pr(BP_DBG, "\t  SR3 [%#x] -> [%#x] (clear WPS)\n", sr3,
+		       sr3 & ~SPI_NOR_SR3_WPS_MASK);
 		spi_puya_write_status_reg(spi, SPI_CMD_WRSR3,
-					  val & ~SPI_NOR_SR3_WPS_MASK);
+					  sr3 & ~SPI_NOR_SR3_WPS_MASK);
 	}
+
+	sr1 = spi_general_get_flash_register(spi, SPI_CMD_RDSR);
+	if (sr1 & SPI_NOR_SR1_PROT_MASK) {
+		fmc_pr(BP_DBG, "\t  SR1 [%#x] -> [%#x]\n", sr1,
+		       sr1 & ~SPI_NOR_SR1_PROT_MASK);
+		spi_puya_write_status_reg(spi, SPI_CMD_WRSR,
+					  sr1 & ~SPI_NOR_SR1_PROT_MASK);
+	}
+
+	sr2 = spi_general_get_flash_register(spi, SPI_CMD_RDSR2);
+	if (sr2 & SPI_NOR_SR2_PROT_MASK) {
+		fmc_pr(BP_DBG, "\t  SR2 [%#x] -> [%#x]\n", sr2,
+		       sr2 & ~SPI_NOR_SR2_PROT_MASK);
+		spi_puya_write_status_reg(spi, SPI_CMD_WRSR2,
+					  sr2 & ~SPI_NOR_SR2_PROT_MASK);
+	}
+
+	/*
+	 * Nothing above can report a rejected write: write_enable() and
+	 * wait_ready() return values this driver has always discarded, and
+	 * fmc_cmd_wait_cpu_finish() only logs a timeout. Read the protection
+	 * back and say so, rather than let sf erase and sf write go on
+	 * answering OK for operations the chip ignores - #18, item 3.
+	 */
+	sr1 = spi_general_get_flash_register(spi, SPI_CMD_RDSR);
+	sr3 = spi_general_get_flash_register(spi, SPI_CMD_RDSR3);
+	if ((sr1 & SPI_NOR_SR1_PROT_MASK) || (sr3 & SPI_NOR_SR3_WPS_MASK))
+		printf("Puya SPI nor: STILL PROTECTED, SR1[%#x] SR3[%#x] - "
+		       "erase and write will be discarded\n", sr1, sr3);
 }
 
 /*****************************************************************************/
