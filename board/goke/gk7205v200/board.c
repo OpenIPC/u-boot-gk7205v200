@@ -343,7 +343,13 @@ int dram_init(void)
 {
 	DECLARE_GLOBAL_DATA_PTR;
 
-	gd->ram_size = PHYS_SDRAM_1_SIZE;
+	/*
+	 * Measured, not PHYS_SDRAM_1_SIZE: that is the largest part the board
+	 * header allows, and boards carry less. totalmem, which the default
+	 * environment saves on a blank flash, and U-Boot's own relocation to
+	 * the top of RAM both come from this.
+	 */
+	gd->ram_size = get_ram_size((long *)CONFIG_SYS_SDRAM_BASE, PHYS_SDRAM_1_SIZE);
 	printf("RAM:   %dMB\n", gd->ram_size / 1024 / 1024);
 	return 0;
 }
